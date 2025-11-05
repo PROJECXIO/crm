@@ -1,7 +1,7 @@
 <div align="center" markdown="1">
 
-<a href="https://frappe.io/products/crm">
-    <img src=".github/logo.svg" height="80" alt="Frappe CRM Logo">
+<a href="#">
+    <img src=".github/revenyu-crm.svg" height="80" alt="CRM Logo">
 </a>
 
 <h1>CRM</h1>

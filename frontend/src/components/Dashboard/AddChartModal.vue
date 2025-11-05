@@ -1,7 +1,7 @@
 <template>
   <Dialog
     v-model="show"
-    :options="{ title: __('Add chart') }"
+    :options="{ title: __('Add chart'), size: '2xl' }"
     @close="show = false"
   >
     <template #body-content>
@@ -11,6 +11,8 @@
           type="select"
           :label="__('Chart Type')"
           :options="chartTypes"
+          variant="outline"
+          size="lg"
         />
         <FormControl
           v-if="chartType === 'number_chart'"
@@ -18,6 +20,8 @@
           type="select"
           :label="__('Number chart')"
           :options="numberCharts"
+          variant="outline"
+          size="lg"
         />
         <FormControl
           v-if="chartType === 'axis_chart'"
@@ -25,6 +29,8 @@
           type="select"
           :label="__('Axis chart')"
           :options="axisCharts"
+          variant="outline"
+          size="lg"
         />
         <FormControl
           v-if="chartType === 'donut_chart'"
@@ -32,13 +38,15 @@
           type="select"
           :label="__('Donut chart')"
           :options="donutCharts"
+          variant="outline"
+          size="lg"
         />
       </div>
     </template>
     <template #actions>
-      <div class="flex items-center justify-end gap-2">
-        <Button variant="outline" :label="__('Cancel')" @click="show = false" />
-        <Button variant="solid" :label="__('Add')" @click="addChart" />
+      <div class="flex flex-col gap-2">
+        <Button variant="solid" :label="__('Add')" @click="addChart" theme="green" size="lg" class="!font-semibold" />
+        <Button variant="outline" :label="__('Cancel')" @click="show = false" theme="red" size="lg" class="!font-semibold" />
       </div>
     </template>
   </Dialog>
@@ -46,7 +54,8 @@
 
 <script setup lang="ts">
 import { getRandom } from '@/utils'
-import { createResource, Dialog, FormControl } from 'frappe-ui'
+import { createResource, Dialog } from 'frappe-ui'
+import FormControl from '@/components/frappe-ui/FormControl.vue'
 import { ref, reactive, inject } from 'vue'
 
 const show = defineModel({

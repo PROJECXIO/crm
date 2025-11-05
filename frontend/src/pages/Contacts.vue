@@ -54,6 +54,10 @@
       <Button
         :label="__('Create')"
         iconLeft="plus"
+        theme="green"
+        variant="solid"
+        size="md"
+        class="px-4 gap-0 !text-xl"
         @click="showContactModal = true"
       />
     </div>

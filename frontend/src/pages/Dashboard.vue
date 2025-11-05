@@ -5,9 +5,11 @@
         <ViewBreadcrumbs routeName="Dashboard" />
       </template>
       <template #right-header>
+
         <Button
           v-if="!editing"
-          :label="__('Refresh')"
+          :title="__('Refresh')"
+          class="h-12 w-12 !font-bold !gap-1"
           :iconLeft="LucideRefreshCcw"
           @click="dashboardItems.reload"
           variant="solid"
@@ -16,49 +18,54 @@
         />
         <Button
           v-if="!editing && isAdmin()"
-          :label="__('Edit')"
+          :title="__('Edit')"
+          class="h-12 w-12 !font-bold !gap-1"
           :iconLeft="LucidePenLine"
           @click="enableEditing"
           variant="solid"
-          theme="blue"
+          theme="purple"
           size="lg"
         />
+        
         <Button
           v-if="editing"
+          class="h-12 !gap-1"
           :label="__('Chart')"
           iconLeft="plus"
           @click="showAddChartModal = true"
           variant="solid"
           theme="green"
-          size="lg"
         />
         <Button
           v-if="editing && isAdmin()"
-          :label="__('Reset to default')"
+          :label="__('Reset')"
+          class="h-12 !gap-1"
           :iconLeft="LucideUndo2"
           @click="resetToDefault"
           variant="outline"
           theme="red"
-          size="lg"
         />
         <Button
           v-if="editing"
+          class="h-12!gap-1"
           :label="__('Cancel')"
+          iconLeft="x"
           @click="cancel"
           variant="solid"
           theme="red"
-          size="lg"
         />
         <Button
           v-if="editing"
+          class="h-12 !gap-1"
           variant="solid"
           :label="__('Save')"
+          iconLeft="save"
           :disabled="!dirty"
           :loading="saveDashboard.loading"
           @click="save"
           theme="green"
-          size="lg"
         />
+        <div class="border border-r border-purple-100 w-px h-10" />
       </template>
     </LayoutHeader>
 

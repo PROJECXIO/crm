@@ -89,7 +89,15 @@
     >
       <NoteIcon class="h-10 w-10" />
       <span>{{ __('No {0} Found', [__('Notes')]) }}</span>
-      <Button :label="__('Create')" iconLeft="plus" @click="createNote" />
+      <Button
+        :label="__('Create')"
+        iconLeft="plus"
+        @click="createNote"
+        theme="green"
+        variant="solid"
+        size="md"
+        class="px-4 gap-0 !text-xl"
+      />
     </div>
   </div>
   <NoteModal

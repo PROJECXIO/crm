@@ -35,8 +35,11 @@
           <Button
             variant="solid"
             :label="__('Create')"
+            theme="green"
             :loading="isLeadCreating"
             @click="createNewLead"
+            class="w-full"
+            size="lg"
           />
         </div>
       </div>
@@ -54,7 +57,6 @@ import { isMobileView } from '@/composables/settings'
 import { showQuickEntryModal, quickEntryProps } from '@/composables/modals'
 import { capture } from '@/telemetry'
 import { createResource } from 'frappe-ui'
-import { useOnboarding } from 'frappe-ui/frappe'
 import { useDocument } from '@/data/document'
 import { computed, onMounted, ref, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
@@ -66,7 +68,6 @@ const props = defineProps({
 const { user } = sessionStore()
 const { getUser, isManager } = usersStore()
 const { getLeadStatus, statusOptions } = statusesStore()
-const { updateOnboardingStep } = useOnboarding('frappecrm')
 
 const show = defineModel()
 const router = useRouter()
@@ -164,9 +165,6 @@ async function createNewLead() {
         isLeadCreating.value = false
         show.value = false
         router.push({ name: 'Lead', params: { leadId: data.name } })
-        updateOnboardingStep('create_first_lead', true, false, () => {
-          localStorage.setItem('firstLead' + user, data.name)
-        })
       },
       onError(err) {
         isLeadCreating.value = false

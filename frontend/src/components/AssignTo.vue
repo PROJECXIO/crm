@@ -6,9 +6,9 @@
           v-if="assignees?.length"
           :is="assignees?.length == 1 ? 'Button' : 'div'"
         >
-          <MultipleAvatar :avatars="assignees" />
+          <MultipleAvatar :avatars="assignees" size="lg"/>
         </component>
-        <Button v-else :label="__('Assign to')" />
+        <Button v-else icon="user" variant="outline" theme="green" :class="btnClass" />
       </div>
     </template>
     <template #body="{ isOpen }">
@@ -33,6 +33,10 @@ import { computed } from 'vue'
 const props = defineProps({
   doctype: String,
   docname: String,
+  btnClass: {
+    type: String,
+    default: ''
+  }
 })
 
 const { document } = useDocument(props.doctype, props.docname)

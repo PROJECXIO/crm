@@ -18,6 +18,12 @@ const routes = [
     name: 'Dashboard',
     component: () => import('@/pages/Dashboard.vue'),
   },
+  	{
+		alias: '/hr',
+		path: '/hr',
+		name: 'HR',
+		component: () => import('@/pages/HR.vue'),
+	},
   {
     alias: '/leads',
     path: '/leads/view/:viewType?',
@@ -25,9 +31,9 @@ const routes = [
     component: () => import('@/pages/Leads.vue'),
   },
   {
-    path: '/leads/:leadId',
+    path: '/leads/:docId',
     name: 'Lead',
-    component: () => import(`@/pages/${handleMobileView('Lead')}.vue`),
+    component: () => import(`@/pages/Lead.vue`),
     props: true,
   },
   {
@@ -37,9 +43,9 @@ const routes = [
     component: () => import('@/pages/Deals.vue'),
   },
   {
-    path: '/deals/:dealId',
+    path: '/deals/:docId',
     name: 'Deal',
-    component: () => import(`@/pages/${handleMobileView('Deal')}.vue`),
+    component: () => import(`@/pages/Deal.vue`),
     props: true,
   },
   {
@@ -61,9 +67,9 @@ const routes = [
     component: () => import('@/pages/Contacts.vue'),
   },
   {
-    path: '/contacts/:contactId',
+    path: '/contacts/:docId',
     name: 'Contact',
-    component: () => import(`@/pages/${handleMobileView('Contact')}.vue`),
+    component: () => import(`@/pages/Contact.vue`),
     props: true,
   },
   {
@@ -73,9 +79,9 @@ const routes = [
     component: () => import('@/pages/Organizations.vue'),
   },
   {
-    path: '/organizations/:organizationId',
+    path: '/organizations/:docId',
     name: 'Organization',
-    component: () => import(`@/pages/${handleMobileView('Organization')}.vue`),
+    component: () => import(`@/pages/Organization.vue`),
     props: true,
   },
   {

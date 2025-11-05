@@ -53,7 +53,7 @@ import { usersStore } from '@/stores/users'
 import { useDocument } from '@/data/document'
 import { isMobileView } from '@/composables/settings'
 import { showQuickEntryModal, quickEntryProps } from '@/composables/modals'
-import { FeatherIcon, createResource, ErrorMessage, call } from 'frappe-ui'
+import { createResource, ErrorMessage, call } from 'frappe-ui'
 import { ref, nextTick, watch, computed } from 'vue'
 
 const props = defineProps({
@@ -86,11 +86,12 @@ const dialogOptions = computed(() => {
   }
 
   let title = __('New {0}', [doctype])
-  let size = 'xl'
+  let size = '2xl'
   let actions = [
     {
       label: __('Create'),
       variant: 'solid',
+      theme: 'green',
       onClick: () => create(),
     },
   ]

@@ -98,7 +98,6 @@ import { statusesStore } from '@/stores/statuses'
 import { showQuickEntryModal, quickEntryProps } from '@/composables/modals'
 import { isMobileView } from '@/composables/settings'
 import { capture } from '@/telemetry'
-import { useOnboarding } from 'frappe-ui/frappe'
 import { Switch, Dialog, createResource, call } from 'frappe-ui'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -117,7 +116,6 @@ const router = useRouter()
 const { statusOptions, getDealStatus } = statusesStore()
 const { isManager } = usersStore()
 const { user } = sessionStore()
-const { updateOnboardingStep } = useOnboarding('frappecrm')
 
 const existingContactChecked = ref(false)
 const existingOrganizationChecked = ref(false)
@@ -182,9 +180,6 @@ async function convertToDeal() {
     existingContact.value = ''
     existingOrganization.value = ''
     error.value = ''
-    updateOnboardingStep('convert_lead_to_deal', true, false, () => {
-      localStorage.setItem('firstDeal' + user, _deal)
-    })
     capture('convert_lead_to_deal')
     router.push({ name: 'Deal', params: { dealId: _deal } })
   }

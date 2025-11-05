@@ -1,38 +1,9 @@
 <template>
   <div
-    class="my-3 flex items-center justify-between text-lg font-medium sm:mb-4 sm:mt-8"
-  >
-    <div class="flex h-8 items-center text-xl font-semibold text-ink-gray-8">
-      {{ __('Data') }}
-      <Badge
-        v-if="document.isDirty"
-        class="ml-3"
-        :label="'Not Saved'"
-        theme="orange"
-      />
-    </div>
-    <div class="flex gap-1">
-      <Button
-        v-if="isManager() && !isMobileView"
-        :tooltip="__('Edit fields layout')"
-        :icon="EditIcon"
-        @click="showDataFieldsModal = true"
-      />
-      <Button
-        label="Save"
-        :disabled="!document.isDirty"
-        variant="solid"
-        :loading="document.save.loading"
-        @click="saveChanges"
-      />
-    </div>
-  </div>
-  <div
     v-if="document.get.loading"
     class="flex flex-1 flex-col items-center justify-center gap-3 text-xl font-medium text-ink-gray-6"
   >
-    <LoadingIndicator class="h-6 w-6" />
-    <span>{{ __('Loading...') }}</span>
+    <Loader />
   </div>
   <div v-else class="pb-8">
     <FieldLayout
@@ -41,6 +12,32 @@
       :data="document.doc"
       :doctype="doctype"
     />
+    <div class="h-8" />
+    <div
+      :class="[
+        'fixed mt-20 bottom-0 right-0 z-auto py-3 px-7 sm:px-2 md:px-8 bg-white/95 backdrop-blur shadow-custom transition-all duration-300',
+      ]"
+      :style="{ width: fixedBarWidth }"
+    >
+      <div class="flex items-center justify-end gap-4 px-4 md:px-6">
+        <Button
+          v-if="isManager() && !isMobileView"
+          :tooltip="__('Edit fields layout')"
+          :icon="EditIcon"
+          @click="showDataFieldsModal = true"
+          size="lg"
+        />
+        <Button
+          label="Save"
+          :disabled="!document.isDirty"
+          variant="solid"
+          theme="green"
+          size="lg"
+          :loading="document.save.loading"
+          @click="saveChanges"
+        />
+      </div>
+    </div>
   </div>
   <DataFieldsModal
     v-if="showDataFieldsModal"
@@ -64,7 +61,9 @@ import LoadingIndicator from '@/components/Icons/LoadingIndicator.vue'
 import { usersStore } from '@/stores/users'
 import { useDocument } from '@/data/document'
 import { isMobileView } from '@/composables/settings'
-import { ref, watch, getCurrentInstance } from 'vue'
+import { ref, watch, getCurrentInstance, computed } from 'vue'
+import Loader from '@/components/Loader.vue'
+import { useStorage, watchDebounced } from '@vueuse/core'
 
 const props = defineProps({
   doctype: {
@@ -87,6 +86,12 @@ const attrs = instance?.vnode?.props ?? {}
 const showDataFieldsModal = ref(false)
 
 const { document } = useDocument(props.doctype, props.docname)
+
+const isSidebarCollapsed = useStorage('isSidebarCollapsed', false)
+
+const fixedBarWidth = computed(
+  () => `calc(100vw - ${isSidebarCollapsed.value ? '80px' : '280px'})`,
+)
 
 const tabs = createResource({
   url: 'crm.fcrm.doctype.crm_fields_layout.crm_fields_layout.get_fields_layout',

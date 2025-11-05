@@ -8,12 +8,7 @@
         v-if="callLogsListView?.customListActions"
         :actions="callLogsListView.customListActions"
       />
-      <Button
-        variant="solid"
-        :label="__('Create')"
-        iconLeft="plus"
-        @click="createCallLog"
-      />
+      <CreateDocumentButton label="New Call Log" @click="createCallLog" />
     </template>
   </LayoutHeader>
   <ViewControls
@@ -24,7 +19,7 @@
     v-model:updatedPageCount="updatedPageCount"
     doctype="CRM Call Log"
   />
-  <CallLogsListView
+  <MainListView
     ref="callLogsListView"
     v-if="callLogs.data && rows.length"
     v-model="callLogs.data.page_length_count"
@@ -36,8 +31,8 @@
       resizeColumn: true,
       rowCount: callLogs.data.row_count,
       totalCount: callLogs.data.total_count,
+      onRowClick: row => showCallLog(row.name)
     }"
-    @showCallLog="showCallLog"
     @loadMore="() => loadMore++"
     @columnWidthUpdated="() => triggerResize++"
     @updatePageCount="(count) => (updatedPageCount = count)"
@@ -78,12 +73,13 @@ import CustomActions from '@/components/CustomActions.vue'
 import PhoneIcon from '@/components/Icons/PhoneIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import ViewControls from '@/components/ViewControls.vue'
-import CallLogsListView from '@/components/ListViews/CallLogsListView.vue'
+import MainListView from '@/components/ListViews/MainListView.vue'
 import CallLogDetailModal from '@/components/Modals/CallLogDetailModal.vue'
 import CallLogModal from '@/components/Modals/CallLogModal.vue'
 import { getCallLogDetail } from '@/utils/callLog'
 import { createResource } from 'frappe-ui'
 import { computed, ref, onMounted } from 'vue'
+import CreateDocumentButton from '@/components/CreateDocumentButton.vue'
 
 const callLogsListView = ref(null)
 const showCallLogModal = ref(false)
@@ -114,6 +110,7 @@ const showCallLogDetailModal = ref(false)
 const callLog = ref({})
 
 function showCallLog(name) {
+  console.log({name})
   showCallLogDetailModal.value = true
   callLog.value = createResource({
     url: 'crm.fcrm.doctype.crm_call_log.crm_call_log.get_call_log',

@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="avatars?.length"
-    class="mr-1.5 flex cursor-pointer items-center "
+    class=" flex cursor-pointer items-center"
     :class="[
       avatars?.length > 1 ? 'flex-row-reverse' : 'truncate [&>div]:truncate',
     ]"
@@ -9,12 +9,14 @@
     <Tooltip v-if="avatars?.length == 1" :text="avatars[0].name">
       <div class="flex items-center gap-2 text-base">
         <Avatar
-          shape="circle"
+        id="avatar"
+          shape="square"
+          variant="outline"
           :image="avatars[0].image"
           :label="avatars[0].label"
           :size="size"
         />
-        <div class="truncate">{{ avatars[0].label }}</div>
+        <!-- <div class="truncate">{{ avatars[0].label }}</div> -->
       </div>
     </Tooltip>
     <Tooltip
@@ -27,7 +29,6 @@
         class="user-avatar -mr-1.5 transform ring-2 ring-outline-white transition hover:z-10 hover:scale-110"
         shape="circle"
         :image="avatar.image"
-        :label="avatar.label"
         :size="size"
         :data-name="avatar.name"
       />
@@ -50,3 +51,6 @@ const props = defineProps({
 })
 const reverseAvatars = computed(() => [...props.avatars].reverse())
 </script>
+
+
+<style></style>

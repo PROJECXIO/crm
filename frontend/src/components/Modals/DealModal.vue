@@ -66,6 +66,9 @@
             :label="__('Create')"
             :loading="isDealCreating"
             @click="createDeal"
+            class="w-full"
+            theme="green"
+            size="lg"
           />
         </div>
       </div>

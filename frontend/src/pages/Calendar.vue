@@ -5,14 +5,7 @@
     </template>
     <template #right-header>
       <ShortcutTooltip :label="__('Create event')" combo="Mod+E">
-        <Button
-          variant="solid"
-          :label="__('Create')"
-          :disabled="isCreateDisabled"
-          @click="newEvent"
-        >
-          <template #prefix><FeatherIcon name="plus" class="h-4" /></template>
-        </Button>
+        <CreateDocumentButton label="New Event" @click="createEvent" />
       </ShortcutTooltip>
     </template>
   </LayoutHeader>
@@ -61,7 +54,8 @@
               <template #target="{ togglePopover }">
                 <Button
                   variant="ghost"
-                  class="text-lg font-medium text-ink-gray-7"
+                  theme="blue"
+                  class="text-lg font-medium text-subheading"
                   :label="currentMonthYear"
                   iconRight="chevron-down"
                   @click="togglePopover"
@@ -74,18 +68,19 @@
           <div class="flex gap-x-1">
             <!-- Increment and Decrement Button -->
 
-            <Button @click="decrement" variant="ghost" icon="chevron-left" />
+            <Button @click="decrement" variant="ghost" theme="green" icon="chevron-left" class="!text-bg-green" />
             <Button
               :label="__('Today')"
               variant="ghost"
+              class="text-subheading hover:bg-transparent focus:!bg-transparent"
               @click="setCalendarDate()"
             />
-            <Button @click="increment" variant="ghost" icon="chevron-right" />
+            <Button @click="increment" variant="ghost" theme="green" icon="chevron-right" class="!text-bg-green" />
 
             <!--  View change button, default is months or can be set via props!  -->
             <TabButtons
               :buttons="enabledModes"
-              class="ml-2"
+              class="ml-2 bg-gray-100  px-1 rounded-md"
               :modelValue="activeView"
               @update:modelValue="updateActiveView($event)"
             />
@@ -132,13 +127,14 @@ import { useKeyboardShortcuts } from '@/composables/useKeyboardShortcuts'
 import {
   Calendar,
   createListResource,
-  TabButtons,
   dayjs,
   DatePicker,
   CalendarActiveEvent as activeEvent,
   call,
 } from 'frappe-ui'
 import { onMounted, ref, computed, provide } from 'vue'
+import CreateDocumentButton from '@/components/CreateDocumentButton.vue'
+import TabButtons from '@/components/frappe-ui/TabButtons.vue'
 
 const { user } = sessionStore()
 const { $dialog } = globalStore()

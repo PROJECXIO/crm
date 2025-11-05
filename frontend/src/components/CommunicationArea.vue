@@ -90,7 +90,6 @@ import { capture } from '@/telemetry'
 import { usersStore } from '@/stores/users'
 import { useStorage } from '@vueuse/core'
 import { call, createResource } from 'frappe-ui'
-import { useOnboarding } from 'frappe-ui/frappe'
 import { ref, watch, computed } from 'vue'
 
 const props = defineProps({
@@ -106,7 +105,6 @@ const reload = defineModel('reload')
 const emit = defineEmits(['scroll'])
 
 const { getUser } = usersStore()
-const { updateOnboardingStep } = useOnboarding('frappecrm')
 
 const showEmailBox = ref(false)
 const showCommentBox = ref(false)
@@ -225,7 +223,6 @@ async function submitEmail() {
   reload.value = true
   emit('scroll')
   capture('email_sent', { doctype: props.doctype })
-  updateOnboardingStep('send_first_email')
 }
 
 async function submitComment() {
@@ -236,7 +233,6 @@ async function submitComment() {
   reload.value = true
   emit('scroll')
   capture('comment_sent', { doctype: props.doctype })
-  updateOnboardingStep('add_first_comment')
 }
 
 function toggleEmailBox() {

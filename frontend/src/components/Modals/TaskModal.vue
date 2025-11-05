@@ -25,6 +25,8 @@
             {{ __('Title') }}
           </div>
           <TextInput
+          size="lg"
+          variant="outline"
             ref="title"
             v-model="_task.title"
             :placeholder="__('Call with John Doe')"
@@ -38,7 +40,7 @@
           <TextEditor
             variant="outline"
             ref="description"
-            editor-class="!prose-sm overflow-auto min-h-[180px] max-h-80 py-1.5 px-2 rounded border border-[--surface-gray-2] bg-surface-gray-2 placeholder-ink-gray-4 hover:border-outline-gray-modals hover:bg-surface-gray-3 hover:shadow-sm focus:bg-surface-white focus:border-outline-gray-4 focus:shadow-sm focus:ring-0 focus-visible:ring-2 focus-visible:ring-outline-gray-3 text-ink-gray-8 transition-colors"
+            editor-class="!prose-sm overflow-auto min-h-[180px] max-h-80 py-1.5 px-2 rounded border border-[--surface-gray-2] placeholder-ink-gray-4 hover:shadow-sm focus:shadow-sm focus:ring-0 text-ink-gray-8 transition-colors"
             :bubbleMenu="true"
             :content="_task.description"
             @change="(val) => (_task.description = val)"
@@ -49,7 +51,8 @@
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <Dropdown :options="taskStatusOptions(updateTaskStatus)">
-            <Button :label="_task.status">
+            <Button :label="_task.status" theme="green">
+              
               <template #prefix>
                 <TaskStatusIcon :status="_task.status" />
               </template>
@@ -83,6 +86,7 @@
           <div class="w-36">
             <DateTimePicker
               class="datepicker"
+              variant="outline"
               v-model="_task.due_date"
               :placeholder="__('01/04/2024 11:30 PM')"
               :formatter="(date) => getFormat(date, '', true, true)"
@@ -90,7 +94,7 @@
             />
           </div>
           <Dropdown :options="taskPriorityOptions(updateTaskPriority)">
-            <Button :label="_task.priority">
+            <Button :label="_task.priority" theme="purple">
               <template #prefix>
                 <TaskPriorityIcon :priority="_task.priority" />
               </template>
@@ -122,7 +126,6 @@ import { taskStatusOptions, taskPriorityOptions, getFormat } from '@/utils'
 import { usersStore } from '@/stores/users'
 import { capture } from '@/telemetry'
 import { TextEditor, Dropdown, Tooltip, call, DateTimePicker } from 'frappe-ui'
-import { useOnboarding } from 'frappe-ui/frappe'
 import { ref, watch, nextTick, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -148,7 +151,6 @@ const emit = defineEmits(['updateTask', 'after'])
 
 const router = useRouter()
 const { users, getUser } = usersStore()
-const { updateOnboardingStep } = useOnboarding('frappecrm')
 
 const error = ref(null)
 const title = ref(null)
@@ -216,7 +218,6 @@ async function updateTask() {
       },
     )
     if (d.name) {
-      updateOnboardingStep('create_first_task')
       capture('task_created')
       tasks.value?.reload()
       emit('after', d, true)

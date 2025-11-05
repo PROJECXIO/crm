@@ -8,12 +8,7 @@
         v-if="leadsListView?.customListActions"
         :actions="leadsListView.customListActions"
       />
-      <Button
-        variant="solid"
-        :label="__('Create')"
-        iconLeft="plus"
-        @click="showLeadModal = true"
-      />
+      <CreateDocumentButton label="New Lead" @click="showLeadModal = true" />
     </template>
   </LayoutHeader>
   <ViewControls
@@ -229,29 +224,30 @@
       </div>
     </template>
   </KanbanView>
-  <LeadsListView
-    ref="leadsListView"
-    v-else-if="leads.data && rows.length"
-    v-model="leads.data.page_length_count"
-    v-model:list="leads"
-    :rows="rows"
-    :columns="leads.data.columns"
-    :options="{
-      showTooltip: false,
-      resizeColumn: true,
-      rowCount: leads.data.row_count,
-      totalCount: leads.data.total_count,
-    }"
-    @loadMore="() => loadMore++"
-    @columnWidthUpdated="() => triggerResize++"
-    @updatePageCount="(count) => (updatedPageCount = count)"
-    @applyFilter="(data) => viewControls.applyFilter(data)"
-    @applyLikeFilter="(data) => viewControls.applyLikeFilter(data)"
-    @likeDoc="(data) => viewControls.likeDoc(data)"
-    @selectionsChanged="
-      (selections) => viewControls.updateSelections(selections)
-    "
-  />
+  <MainListView
+		ref="leadsListView"
+		v-else-if="leads.data && rows.length"
+		v-model="leads.data.page_length_count"
+		v-model:list="leads"
+		doctype="CRM Lead"
+		routeName="Lead"
+		:rows="rows"
+		:columns="leads.data.columns"
+		:options="{
+			showTooltip: false,
+			resizeColumn: true,
+			rowCount: leads.data.row_count,
+			totalCount: leads.data.total_count,
+		}"
+		@loadMore="() => loadMore++"
+		@columnWidthUpdated="() => triggerResize++"
+		@updatePageCount="(count) => (updatedPageCount = count)"
+		@applyFilter="(data) => viewControls.applyFilter(data)"
+		@applyLikeFilter="(data) => viewControls.applyLikeFilter(data)"
+		@likeDoc="(data) => viewControls.likeDoc(data)"
+		@selectionsChanged="(selections) => viewControls.updateSelections(selections)"
+	/>
+  
   <div v-else-if="leads.data" class="flex h-full items-center justify-center">
     <div
       class="flex flex-col items-center gap-3 text-xl font-medium text-ink-gray-4"
@@ -298,7 +294,8 @@ import CommentIcon from '@/components/Icons/CommentIcon.vue'
 import IndicatorIcon from '@/components/Icons/IndicatorIcon.vue'
 import LeadsIcon from '@/components/Icons/LeadsIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
-import LeadsListView from '@/components/ListViews/LeadsListView.vue'
+// import LeadsListView from '@/components/ListViews/LeadsListView.vue'
+import MainListView from '@/components/ListViews/MainListView.vue'
 import KanbanView from '@/components/Kanban/KanbanView.vue'
 import LeadModal from '@/components/Modals/LeadModal.vue'
 import NoteModal from '@/components/Modals/NoteModal.vue'
@@ -313,6 +310,7 @@ import { formatDate, timeAgo, website, formatTime } from '@/utils'
 import { Avatar, Tooltip, Dropdown } from 'frappe-ui'
 import { useRoute } from 'vue-router'
 import { ref, computed, reactive, h } from 'vue'
+import CreateDocumentButton from '@/components/CreateDocumentButton.vue'
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('CRM Lead')

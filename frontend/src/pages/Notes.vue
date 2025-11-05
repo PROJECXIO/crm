@@ -4,12 +4,7 @@
       <ViewBreadcrumbs v-model="viewControls" routeName="Notes" />
     </template>
     <template #right-header>
-      <Button
-        variant="solid"
-        :label="__('Create')"
-        iconLeft="plus"
-        @click="createNote"
-      />
+      <CreateDocumentButton label="New Note" @click="createNote" />
     </template>
   </LayoutHeader>
   <ViewControls
@@ -23,14 +18,14 @@
       defaultViewName: __('Notes View'),
     }"
   />
-  <div class="flex-1 overflow-y-auto">
+  <div class="flex-1 overflow-y-auto mt-8">
     <div
       v-if="notes.data?.data?.length"
       class="grid grid-cols-1 gap-2 px-3 pb-2 sm:grid-cols-4 sm:gap-4 sm:px-5 sm:pb-3"
     >
       <div
         v-for="note in notes.data.data"
-        class="group flex h-56 cursor-pointer flex-col justify-between gap-2 rounded-lg border px-5 py-4 shadow-sm hover:bg-surface-menu-bar"
+        class="group flex cursor-pointer flex-col justify-between gap-2 rounded-lg border px-5 py-4 shadow-sm hover:bg-surface-menu-bar hover:scale-105 transition-transform duration-300"
         @click="editNote(note)"
       >
         <div class="flex items-center justify-between">
@@ -42,6 +37,7 @@
               {
                 label: __('Delete'),
                 icon: 'trash-2',
+                theme: 'red',
                 onClick: () => deleteNote(note.name),
               },
             ]"
@@ -114,6 +110,7 @@ import { usersStore } from '@/stores/users'
 import { timeAgo, formatDate } from '@/utils'
 import { TextEditor, call, Dropdown, Tooltip, ListFooter } from 'frappe-ui'
 import { ref, watch } from 'vue'
+import CreateDocumentButton from '@/components/CreateDocumentButton.vue'
 
 const { getUser } = usersStore()
 

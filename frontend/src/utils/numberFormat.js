@@ -223,7 +223,7 @@ function getNumberFormatInfo(format) {
   }
 
   // get the precision from the number format
-  info.precision = format.split(info.decimalStr).slice(1)[0].length
+  info.precision = format?.split(info.decimalStr).slice(1)[0]?.length || 0
 
   return info
 }

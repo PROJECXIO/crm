@@ -4,7 +4,10 @@
       <div class="flex items-center">
         <Button
           :label="__('Filter')"
-          :class="filters?.size ? 'rounded-r-none' : ''"
+          :class="['font-semibold', filters?.size ? 'rounded-r-none' : '']"
+          theme="green"
+          variant="solid"
+          size="md"
           :iconLeft="FilterIcon"
           @click="togglePopover"
         >
@@ -21,6 +24,7 @@
           :tooltip="__('Clear all Filter')"
           class="rounded-l-none border-l"
           icon="x"
+          theme="red"
           @click.stop="clearfilter(close)"
         />
       </div>
@@ -55,6 +59,7 @@
                   :options="filterableFields.data"
                   @change="(e) => updateFilter(e, i)"
                   :placeholder="__('First Name')"
+                  variant="outline"
                 />
               </div>
               <div id="operator">
@@ -86,6 +91,7 @@
                     :options="filterableFields.data"
                     @change="(e) => updateFilter(e, i)"
                     :placeholder="__('First Name')"
+                    variant="outline"
                   />
                 </div>
                 <div id="operator">
@@ -97,6 +103,7 @@
                       getOperators(f.field.fieldtype, f.field.fieldname)
                     "
                     :placeholder="__('Equals')"
+                    variant="outline"
                   />
                 </div>
                 <div id="value" class="!min-w-[140px]">
@@ -105,12 +112,14 @@
                     v-model="f.value"
                     @change="(v) => updateValue(v, f)"
                     :placeholder="__('John Doe')"
+                    class="!bg-white"
                   />
                 </div>
               </div>
               <Button
                 class="flex"
                 variant="ghost"
+                theme="red"
                 icon="x"
                 @click="removeFilter(i)"
               />
@@ -128,11 +137,13 @@
               :options="availableFilters"
               @change="(e) => setfilter(e)"
               :placeholder="__('First name')"
+              variant="outline"
             >
               <template #target="{ togglePopover }">
                 <Button
-                  class="!text-ink-gray-5"
-                  variant="ghost"
+                  class="!text-subheading"
+                  variant="subtle"
+                  theme="green"
                   :label="__('Add Filter')"
                   iconLeft="plus"
                   @click="togglePopover()"
@@ -141,8 +152,9 @@
             </Autocomplete>
             <Button
               v-if="filters?.size"
-              class="!text-ink-gray-5"
-              variant="ghost"
+              class="!text-subheading w-36"
+              variant="subtle"
+              theme="red"
               :label="__('Clear all Filter')"
               @click="clearfilter(close)"
             />

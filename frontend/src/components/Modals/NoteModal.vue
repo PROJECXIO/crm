@@ -23,6 +23,8 @@
         <div>
           <FormControl
             ref="title"
+            size="lg"
+            variant="outline"
             :label="__('Title')"
             v-model="_note.title"
             :placeholder="__('Call with John Doe')"
@@ -34,7 +36,7 @@
           <TextEditor
             variant="outline"
             ref="content"
-            editor-class="!prose-sm overflow-auto min-h-[180px] max-h-80 py-1.5 px-2 rounded border border-[--surface-gray-2] bg-surface-gray-2 placeholder-ink-gray-4 hover:border-outline-gray-modals hover:bg-surface-gray-3 hover:shadow-sm focus:bg-surface-white focus:border-outline-gray-4 focus:shadow-sm focus:ring-0 focus-visible:ring-2 focus-visible:ring-outline-gray-3 text-ink-gray-8 transition-colors"
+            editor-class="!prose-sm overflow-auto min-h-[180px] max-h-80 py-1.5 px-2 rounded border border-[--surface-gray-2] placeholder-ink-gray-4 hover:border-outline-gray-modals hover:shadow-sm focus:shadow-sm focus:ring-0 text-ink-gray-8 transition-colors"
             :bubbleMenu="true"
             :content="_note.content"
             @change="(val) => (_note.content = val)"
@@ -52,6 +54,9 @@
           :label="editMode ? __('Update') : __('Create')"
           variant="solid"
           @click="updateNote"
+          class="w-full"
+          theme="green"
+          size="lg"
         />
       </div>
     </template>
@@ -62,7 +67,6 @@
 import ArrowUpRightIcon from '@/components/Icons/ArrowUpRightIcon.vue'
 import { capture } from '@/telemetry'
 import { TextEditor, call } from 'frappe-ui'
-import { useOnboarding } from 'frappe-ui/frappe'
 import { ref, nextTick, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -87,8 +91,6 @@ const notes = defineModel('reloadNotes')
 const emit = defineEmits(['after'])
 
 const router = useRouter()
-
-const { updateOnboardingStep } = useOnboarding('frappecrm')
 
 const error = ref(null)
 const title = ref(null)
@@ -127,7 +129,6 @@ async function updateNote() {
       },
     )
     if (d.name) {
-      updateOnboardingStep('create_first_note')
       capture('note_created')
       notes.value?.reload()
       emit('after', d, true)

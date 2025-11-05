@@ -7,26 +7,50 @@
         </template>
       </Breadcrumbs>
     </template>
+    <template #right-header>
+      <Button
+        :title="__('Delete')"
+        variant="subtle"
+        theme="red"
+        icon="trash-2"
+        @click="deleteContact()"
+        class="!size-12"
+      />
+      <Button
+        v-if="callEnabled && contact.doc.mobile_no"
+        :title="__('Make Call')"
+        class="!size-12"
+        variant="outline"
+        theme="green"
+        :icon="PhoneIcon"
+        @click="callEnabled && makeCall(contact.doc.mobile_no)"
+      />
+    </template>
   </LayoutHeader>
-  <div v-if="contact.doc" ref="parentRef" class="flex h-full">
-    <Resizer
-      v-if="contact.doc"
-      :parent="$refs.parentRef"
-      class="flex h-full flex-col overflow-hidden border-r"
+  <div
+    v-if="contact.doc"
+    ref="parentRef"
+    class="flex flex-col h-full py-4 px-1 md:px-4 gap-5 bg-inherit dark:bg-dark"
+  >
+    <!-- details  -->
+    <div
+      class="flex py-5 p-5 md:px-6 rounded-xl bg-sidebar-bg mx-1 md:mx-2 lg:mx-8"
+      style="box-shadow: -9px 9px 40px 0px #00000014"
     >
-      <div class="border-b">
-        <FileUploader
-          @success="changeContactImage"
-          :validateFile="validateIsImageFile"
-        >
-          <template #default="{ openFileSelector, error }">
-            <div class="flex flex-col items-start justify-start gap-4 p-5">
-              <div class="flex gap-4 items-center">
-                <div class="group relative h-15.5 w-15.5">
+      <!-- owner  -->
+      <div class="flex flex-1 gap-5" style="">
+        <div class="flex flex-1 items-center gap-5 flex-col md:flex-row">
+          <FileUploader
+            @success="changeContactImage"
+            :validateFile="validateIsImageFile"
+          >
+            <template #default="{ openFileSelector, error }">
+              <div class="flex items-center justify-start">
+                <div class="group relative">
                   <Avatar
-                    size="3xl"
-                    class="h-15.5 w-15.5"
-                    :label="contact.doc.full_name"
+                    shape="square"
+                    class="!size-24"
+                    :label="title"
                     :image="contact.doc.image"
                   />
                   <component
@@ -45,6 +69,7 @@
                               {
                                 icon: 'trash-2',
                                 label: __('Remove image'),
+                                theme: 'red',
                                 onClick: () => changeContactImage(''),
                               },
                             ],
@@ -54,74 +79,66 @@
                     class="!absolute bottom-0 left-0 right-0"
                   >
                     <div
-                      class="z-1 absolute bottom-0 left-0 right-0 flex h-14 cursor-pointer items-center justify-center rounded-b-full bg-black bg-opacity-40 pt-5 opacity-0 duration-300 ease-in-out group-hover:opacity-100"
+                      class="z-1 absolute bottom-0.5 left-0 right-0.5 flex h-9 cursor-pointer items-center justify-center bg-black bg-opacity-40 pt-3 opacity-0 duration-300 ease-in-out group-hover:opacity-100"
                       style="
-                        -webkit-clip-path: inset(22px 0 0 0);
-                        clip-path: inset(22px 0 0 0);
+                        -webkit-clip-path: inset(12px 0 0 0);
+                        clip-path: inset(12px 0 0 0);
                       "
                     >
-                      <CameraIcon class="h-6 w-6 cursor-pointer text-white" />
+                      <CameraIcon class="size-4 cursor-pointer text-white" />
                     </div>
                   </component>
                 </div>
-                <div class="flex flex-col gap-2 truncate text-ink-gray-9">
-                  <div class="truncate text-2xl font-medium">
-                    <span v-if="contact.doc.salutation">
-                      {{ contact.doc.salutation + '. ' }}
-                    </span>
-                    <span>{{ contact.doc.full_name }}</span>
-                  </div>
-                  <div
-                    v-if="contact.doc.company_name"
-                    class="flex items-center gap-1.5 text-base text-ink-gray-8"
-                  >
-                    <Avatar
-                      size="xs"
-                      :label="contact.doc.company_name"
-                      :image="
-                        getOrganization(contact.doc.company_name)
-                          ?.organization_logo
-                      "
-                    />
-                    <span class="">{{ contact.doc.company_name }}</span>
-                  </div>
-                  <ErrorMessage :message="__(error)" />
-                </div>
               </div>
-              <div class="flex gap-1.5">
-                <Button
-                  v-if="callEnabled && contact.doc.mobile_no"
-                  :label="__('Make Call')"
-                  size="sm"
-                  :iconLeft="PhoneIcon"
-                  @click="callEnabled && makeCall(contact.doc.mobile_no)"
-                />
-                <Button
-                  :label="__('Delete')"
-                  theme="red"
-                  size="sm"
-                  iconLeft="trash-2"
-                  @click="deleteContact()"
-                />
-              </div>
+            </template>
+          </FileUploader>
+          <div class="flex flex-col gap-2">
+            <div class="text-[#00291F] text-2xl font-semibold">
+              {{ title }}
             </div>
-          </template>
-        </FileUploader>
+            <div
+              v-if="contact.doc.mobile_no || contact.doc.phone"
+              class="flex gap-2"
+            >
+              <PhoneIcon class="size-4" />
+              <span class="text-[#666] text-xs">{{
+                contact.doc.mobile_no || contact.doc.phone
+              }}</span>
+            </div>
+            <div class="flex gap-2">
+              <Email2Icon class="size-4" />
+              <span class="text-[#666] text-xs">{{
+                contact.doc.email_id
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end">
+          <Dropdown
+            :options="[
+              {
+                label: __('Edit'),
+                icon: 'edit',
+                theme: 'gray',
+                onClick: () => {
+                  showContactModal = true
+                },
+              },
+              {
+                label: __('Delete'),
+                icon: 'trash-2',
+                theme: 'red',
+                onClick: deleteContact,
+              },
+            ]"
+          >
+            <Button icon="more-vertical" />
+          </Dropdown>
+        </div>
       </div>
-      <div
-        v-if="sections.data"
-        class="flex flex-1 flex-col justify-between overflow-hidden"
-      >
-        <SidePanelLayout
-          :sections="parsedSections"
-          doctype="Contact"
-          :docname="contact.doc.name"
-          @reload="sections.reload"
-        />
-      </div>
-    </Resizer>
+    </div>
     <Tabs as="div" v-model="tabIndex" :tabs="tabs">
-      <template #tab-item="{ tab, selected }">
+      <!-- <template #tab-item="{ tab, selected }">
         <button
           class="group flex items-center gap-2 border-b border-transparent py-2.5 text-base text-ink-gray-5 duration-300 ease-in-out hover:border-outline-gray-3 hover:text-ink-gray-9"
           :class="{ 'text-ink-gray-9': selected }"
@@ -138,7 +155,7 @@
             {{ tab.count }}
           </Badge>
         </button>
-      </template>
+      </template> -->
       <template #tab-panel="{ tab }">
         <DealsListView
           v-if="tab.label === 'Deals' && rows.length"
@@ -181,6 +198,7 @@ import SidePanelLayout from '@/components/SidePanelLayout.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import PhoneIcon from '@/components/Icons/PhoneIcon.vue'
 import CameraIcon from '@/components/Icons/CameraIcon.vue'
+import LeadsIcon from '@/components/Icons/LeadsIcon.vue'
 import DealsIcon from '@/components/Icons/DealsIcon.vue'
 import DealsListView from '@/components/ListViews/DealsListView.vue'
 import { formatDate, timeAgo, validateIsImageFile } from '@/utils'
@@ -198,7 +216,6 @@ import {
   Breadcrumbs,
   Avatar,
   FileUploader,
-  Tabs,
   call,
   createResource,
   usePageMeta,
@@ -207,7 +224,7 @@ import {
 } from 'frappe-ui'
 import { ref, computed, h } from 'vue'
 import { useRoute } from 'vue-router'
-
+import Tabs from '@/components/frappe-ui/Tabs.vue'
 const { brand } = getSettings()
 const { makeCall } = globalStore()
 
@@ -217,7 +234,7 @@ const { getDealStatus } = statusesStore()
 const { doctypeMeta } = getMeta('Contact')
 
 const props = defineProps({
-  contactId: {
+  docId: {
     type: String,
     required: true,
   },
@@ -228,7 +245,7 @@ const route = useRoute()
 const errorTitle = ref('')
 const errorMessage = ref('')
 
-const { document: contact } = useDocument('Contact', props.contactId)
+const { document: contact } = useDocument('Contact', props.docId)
 
 const breadcrumbs = computed(() => {
   let items = [{ label: __('Contacts'), route: { name: 'Contacts' } }]
@@ -250,14 +267,14 @@ const breadcrumbs = computed(() => {
 
   items.push({
     label: title.value,
-    route: { name: 'Contact', params: { contactId: props.contactId } },
+    route: { name: 'Contact', params: { docId: props.docId } },
   })
   return items
 })
 
 const title = computed(() => {
   let t = doctypeMeta['Contact']?.title_field || 'name'
-  return contact.doc?.[t] || props.contactId
+  return contact.doc?.[t] || props.docId
 })
 
 usePageMeta(() => {
@@ -284,6 +301,11 @@ function changeContactImage(file) {
 const tabIndex = ref(0)
 const tabs = [
   {
+    label: 'Leads',
+    icon: h(LeadsIcon, { class: 'h-4 w-4' }),
+    count: computed(() => deals.data?.length),
+  },
+  {
     label: 'Deals',
     icon: h(DealsIcon, { class: 'h-4 w-4' }),
     count: computed(() => deals.data?.length),
@@ -292,10 +314,17 @@ const tabs = [
 
 const deals = createResource({
   url: 'crm.api.contact.get_linked_deals',
-  cache: ['deals', props.contactId],
-  params: { contact: props.contactId },
+  cache: ['deals', props.docId],
+  params: { contact: props.docId },
   auto: true,
 })
+
+// const leads = createResource({
+//   url: 'crm.api.contact.get_linked_deals',
+//   cache: ['deals', props.docId],
+//   params: { contact: props.docId },
+//   auto: true,
+// })
 
 const rows = computed(() => {
   if (!deals.data || deals.data == []) return []

@@ -76,7 +76,7 @@
   >
     <CalendarIcon class="h-10 w-10" />
     <span>{{ __('No Events Scheduled') }}</span>
-    <Button :label="__('Schedule an Event')" @click="showEvent()" />
+    <Button :label="__('Schedule an Event')" @click="showEvent()" theme="green" variant="solid" />
   </div>
 </template>
 <script setup>

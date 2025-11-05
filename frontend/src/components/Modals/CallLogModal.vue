@@ -44,6 +44,8 @@
             v-bind="action"
             :label="__(action.label)"
             :loading="loading"
+            theme="green"
+            size="lg"
           />
         </div>
       </div>

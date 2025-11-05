@@ -16,74 +16,167 @@
         v-if="document.actions?.length"
         :actions="document.actions"
       />
-      <AssignTo v-model="assignees.data" doctype="CRM Deal" :docname="dealId" />
-      <Dropdown
-        v-if="doc && document.statuses"
-        :options="statuses"
-        placement="right"
-      >
-        <template #default="{ open }">
-          <Button
-            v-if="doc.status"
-            :label="doc.status"
-            :iconRight="open ? 'chevron-up' : 'chevron-down'"
-          >
-            <template #prefix>
-              <IndicatorIcon :class="getDealStatus(doc.status).color" />
-            </template>
-          </Button>
-        </template>
-      </Dropdown>
+      <Button
+        :tooltip="__('Delete')"
+        variant="subtle"
+        theme="red"
+        icon="trash-2"
+        @click="deleteDeal"
+        class="!size-12"
+      />
     </template>
   </LayoutHeader>
-  <div v-if="doc.name" class="flex h-full overflow-hidden">
-    <Tabs as="div" v-model="tabIndex" :tabs="tabs">
-      <template #tab-panel>
-        <Activities
-          ref="activities"
-          doctype="CRM Deal"
-          :docname="dealId"
-          :tabs="tabs"
-          v-model:reload="reload"
-          v-model:tabIndex="tabIndex"
-          @beforeSave="beforeStatusChange"
-          @afterSave="reloadAssignees"
-        />
-      </template>
-    </Tabs>
-    <Resizer side="right" class="flex flex-col justify-between border-l">
+
+  <div class="space-y-8">
+    <div
+      v-if="doc.name"
+      class="flex flex-col gap-5 min-h-[calc(100vh-100px)] overflow-hidden justify-center"
+    >
+      <!-- deal details -->
       <div
-        class="flex h-10.5 cursor-copy items-center border-b px-5 py-2.5 text-lg font-medium text-ink-gray-9"
-        @click="copyToClipboard(dealId)"
+        class="mx-1 md:mx-3 lg:mx-8 flex flex-col items-start px-4 py-3 md:px-6 md:py-5 lg:items-center lg:flex-row rounded-xl bg-sidebar-bg dark:bg-[#313131] gap-4 mt-5"
+        style="box-shadow: -9px 9px 40px 0px #00000014"
       >
-        {{ __(dealId) }}
-      </div>
-      <div class="flex items-center justify-start gap-5 border-b p-5">
-        <Tooltip :text="__('Organization logo')">
-          <div class="group relative size-12">
-            <Avatar
-              size="3xl"
-              class="size-12"
-              :label="title"
-              :image="organization?.organization_logo"
-            />
-          </div>
-        </Tooltip>
-        <div class="flex flex-col gap-2.5 truncate text-ink-gray-9">
-          <Tooltip :text="organization?.name || __('Set an organization')">
-            <div class="truncate text-2xl font-medium">
-              {{ title }}
+        <div class="w-full gap-4">
+          <div class="flex items-start gap-3 flex-col lg:flex-row">
+            <!--personal image-->
+            <div class="flex items-start justify-between w-full lg:w-auto">
+              <div v-if="isMobileView">
+                <div class="flex items-center justify-start">
+                  <div class="flex gap-3">
+                    <Tooltip :text="__('Generate PDF')">
+                      <Button class="!w-8 !h-8" variant="outline" icon="file" />
+                      <!-- @click="showFormModal = true" -->
+                    </Tooltip>
+
+                    <Tooltip :text="__('Add comment')">
+                      <Button
+                        @click="showCommentBox = true"
+                        class="w-8 !h-8"
+                        variant="outline"
+                      >
+                        <CommentIcon class="h-4 w-4" />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip v-if="callEnabled" :text="__('Make a call')">
+                      <Button
+                        class="w-8 !h-8"
+                        variant="outline"
+                        @click="
+                          () =>
+                            doc.mobile_no
+                              ? makeCall(doc.mobile_no)
+                              : toast.error(__('No phone number set'))
+                        "
+                      >
+                        <PhoneIcon class="h-4 w-4" />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip :text="__('Send an email')">
+                      <Button
+                        @click="
+                          doc.email
+                            ? openEmailBox()
+                            : toast.error(__('No email set'))
+                        "
+                        class="w-8 !h-8"
+                        variant="outline"
+                      >
+                        <EmailIcon class="h-4 w-4" />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip :text="__('Go to website')">
+                      <Button
+                        @click="
+                          doc.website_link
+                            ? openWebsite(doc.website_link)
+                            : toast.error(__('No website set'))
+                        "
+                        class="w-8 !h-8"
+                        variant="outline"
+                      >
+                        <LinkIcon class="h-4 w-4" />
+                      </Button>
+                    </Tooltip>
+                    <FileUploader
+                      @success="(file) => updateField('image', file.file_url)"
+                      :validateFile="validateFile"
+                    >
+                      <template #default="{ openFileSelector, error }">
+                        <Tooltip :text="__('Attach a file')">
+                          <Button
+                            :tooltip="__('Attach a file')"
+                            :icon="AttachmentIcon"
+                            @click="showFilesUploader = true"
+                            class="!size-12"
+                            variant="outline"
+                          />
+                        </Tooltip>
+                      </template>
+                    </FileUploader>
+                  </div>
+                </div>
+              </div>
             </div>
-          </Tooltip>
-          <div class="flex gap-1.5">
+            <!--lead data -->
+            <div class="flex gap-3">
+              <div class="size-12">
+                <Avatar
+                  size="3xl"
+                  class="size-12"
+                  :label="title"
+                  :image="organization?.organization_logo"
+                />
+              </div>
+              <div class="space-y-2">
+                <div
+                  class="flex items-center gap-1 mb-2 text-[#00291F] text-xl md:text-2xl font-bold md:font-semibold"
+                  v-if="title"
+                >
+                  {{ title }}
+                </div>
+                <div class="flex flex-col space-y-1">
+                  <div class="flex items-center gap-1 text-[#666666] text-xs">
+                    <HashIcon class="stroke-[#666]" />
+                    {{ doc.lead }}
+                  </div>
+                  <div
+                    class="flex items-center gap-1 text-[#666666] text-xs"
+                    v-if="doc?.mobile_no"
+                  >
+                    <MobileIcon class="stroke-[#666]" />
+                    {{ doc.mobile_no }}
+                  </div>
+                  <div
+                    class="flex items-center gap-1 text-[#666666] text-xs"
+                    v-if="doc?.email"
+                  >
+                    <EmailIcon class="stroke-[#666]" />
+                    {{ doc.email }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex w-full flex-col items-end gap-3">
+          <div
+            class="flex w-full flex-row mt-3 lg:mt-0 items-center justify-end gap-3 gap-y-2 flex-wrap lg:flex-nowrap"
+          >
             <Button
               v-if="callEnabled"
+                variant="outline"
+                theme="green"
+                class="!w-12 !h-12"
               :tooltip="__('Make a call')"
               :icon="PhoneIcon"
               @click="triggerCall"
             />
 
             <Button
+              variant="outline"
+              theme="green"
+              class="!w-12 !h-12"
               :tooltip="__('Send an email')"
               :icon="Email2Icon"
               @click="
@@ -92,6 +185,9 @@
             />
 
             <Button
+              variant="outline"
+              theme="green"
+              class="!w-12 !h-12"
               :tooltip="__('Go to website')"
               :icon="LinkIcon"
               @click="
@@ -102,175 +198,75 @@
             />
 
             <Button
+              variant="outline"
+              theme="green"
+              class="!w-12 !h-12"
               :tooltip="__('Attach a file')"
               :icon="AttachmentIcon"
               @click="showFilesUploader = true"
             />
 
-            <Button
-              :tooltip="__('Delete')"
-              variant="subtle"
-              icon="trash-2"
-              theme="red"
-              @click="deleteDeal"
-            />
+            <div
+              class="flex w-full md:w-auto gap-3 items-center justify-between md:justify-end"
+            >
+                <!-- <Tooltip :text="__('Assign to')">
+                <AssignTo
+                  v-model="assignees.data"
+                  doctype="CRM Lead"
+                  :docname="docId"
+                  btnClass="!w-12 !h-12"
+                />
+              </Tooltip> -->
+              <Dropdown
+                v-if="doc && document.statuses"
+                :options="statuses"
+                placement="right"
+              >
+                <template #default="{ open }">
+                  <Button
+                    v-if="doc.status"
+                    :label="doc.status"
+                    :iconRight="open ? 'chevron-up' : 'chevron-down'"
+                    variant="solid"
+                    theme="gray"
+                    class="!h-12"
+                  >
+                    <template #prefix>
+                      <IndicatorIcon :class="getDealStatus(doc.status).color" />
+                    </template>
+                  </Button>
+                </template>
+              </Dropdown>
+            </div>
           </div>
         </div>
       </div>
-      <SLASection
-        v-if="doc.sla_status"
-        v-model="doc"
-        @updateField="updateField"
-      />
-      <div
-        v-if="sections.data"
-        class="flex flex-1 flex-col justify-between overflow-hidden"
-      >
-        <SidePanelLayout
-          :sections="sections.data"
-          :addContact="addContact"
-          doctype="CRM Deal"
-          :docname="dealId"
-          @reload="sections.reload"
-          @beforeFieldChange="beforeStatusChange"
-          @afterFieldChange="reloadAssignees"
-        >
-          <template #actions="{ section }">
-            <div v-if="section.name == 'contacts_section'" class="pr-2">
-              <Link
-                value=""
-                doctype="Contact"
-                @change="(e) => addContact(e)"
-                :onCreate="
-                  (value, close) => {
-                    _contact = {
-                      first_name: value,
-                      company_name: doc.organization,
-                    }
-                    showContactModal = true
-                    close()
-                  }
-                "
-              >
-                <template #target="{ togglePopover }">
-                  <Button
-                    class="h-7 px-3"
-                    variant="ghost"
-                    icon="plus"
-                    @click="togglePopover()"
-                  />
-                </template>
-              </Link>
-            </div>
-          </template>
-          <template #default="{ section }">
-            <div
-              v-if="section.name == 'contacts_section'"
-              class="contacts-area"
-            >
-              <div
-                v-if="dealContacts?.loading && dealContacts?.data?.length == 0"
-                class="flex min-h-20 flex-1 items-center justify-center gap-3 text-base text-ink-gray-4"
-              >
-                <LoadingIndicator class="h-4 w-4" />
-                <span>{{ __('Loading...') }}</span>
-              </div>
-              <div
-                v-else-if="dealContacts?.data?.length"
-                v-for="(contact, i) in dealContacts.data"
-                :key="contact.name"
-              >
-                <div class="px-2 pb-2.5" :class="[i == 0 ? 'pt-5' : 'pt-2.5']">
-                  <Section :opened="contact.opened">
-                    <template #header="{ opened, toggle }">
-                      <div
-                        class="flex cursor-pointer items-center justify-between gap-2 pr-1 text-base leading-5 text-ink-gray-7"
-                      >
-                        <div
-                          class="flex h-7 items-center gap-2 truncate"
-                          @click="toggle()"
-                        >
-                          <Avatar
-                            :label="contact.full_name"
-                            :image="contact.image"
-                            size="md"
-                          />
-                          <div class="truncate">
-                            {{ contact.full_name }}
-                          </div>
-                          <Badge
-                            v-if="contact.is_primary"
-                            class="ml-2"
-                            variant="outline"
-                            :label="__('Primary')"
-                            theme="green"
-                          />
-                        </div>
-                        <div class="flex items-center">
-                          <Dropdown :options="contactOptions(contact)">
-                            <Button
-                              icon="more-horizontal"
-                              class="text-ink-gray-5"
-                              variant="ghost"
-                            />
-                          </Dropdown>
-                          <Button
-                            variant="ghost"
-                            :tooltip="__('View contact')"
-                            :icon="ArrowUpRightIcon"
-                            @click="
-                              router.push({
-                                name: 'Contact',
-                                params: { contactId: contact.name },
-                              })
-                            "
-                          />
-                          <Button
-                            variant="ghost"
-                            class="transition-all duration-300 ease-in-out"
-                            :class="{ 'rotate-90': opened }"
-                            icon="chevron-right"
-                            @click="toggle()"
-                          />
-                        </div>
-                      </div>
-                    </template>
-                    <div
-                      class="flex flex-col gap-1.5 text-base text-ink-gray-8"
-                    >
-                      <div class="flex items-center gap-3 pb-1.5 pl-1 pt-4">
-                        <Email2Icon class="h-4 w-4" />
-                        {{ contact.email }}
-                      </div>
-                      <div class="flex items-center gap-3 p-1 py-1.5">
-                        <PhoneIcon class="h-4 w-4" />
-                        {{ contact.mobile_no }}
-                      </div>
-                    </div>
-                  </Section>
-                </div>
-                <div
-                  v-if="i != dealContacts.data.length - 1"
-                  class="mx-2 h-px border-t border-outline-gray-modals"
-                />
-              </div>
-              <div
-                v-else
-                class="flex h-20 items-center justify-center text-base text-ink-gray-5"
-              >
-                {{ __('No contacts added') }}
-              </div>
-            </div>
-          </template>
-        </SidePanelLayout>
-      </div>
-    </Resizer>
+
+      <!--  deal tabs -->
+      <Tabs as="div" v-model="tabIndex" :tabs="tabs">
+        <template #tab-panel>
+          <Activities
+            ref="activities"
+            doctype="CRM Deal"
+            :docname="docId"
+            :tabs="tabs"
+            :dealContacts="dealContacts?.data"
+            v-model:reload="reload"
+            v-model:tabIndex="tabIndex"
+            @beforeSave="beforeStatusChange"
+            @afterSave="reloadAssignees"
+            @removeContact="(contact) => removeContact(contact)"
+            @setPrimaryContact="(contact) => setPrimaryContact(contact)"
+          />
+        </template>
+      </Tabs>
+    </div>
+    <ErrorPage
+      v-else-if="errorTitle"
+      :errorTitle="errorTitle"
+      :errorMessage="errorMessage"
+    />
   </div>
-  <ErrorPage
-    v-else-if="errorTitle"
-    :errorTitle="errorTitle"
-    :errorMessage="errorMessage"
-  />
   <OrganizationModal
     v-if="showOrganizationModal"
     v-model="showOrganizationModal"
@@ -292,7 +288,7 @@
   <FilesUploader
     v-model="showFilesUploader"
     doctype="CRM Deal"
-    :docname="dealId"
+    :docname="docId"
     @after="
       () => {
         activities?.all_activities?.reload()
@@ -304,7 +300,7 @@
     v-if="showDeleteLinkedDocModal"
     v-model="showDeleteLinkedDocModal"
     :doctype="'CRM Deal'"
-    :docname="dealId"
+    :docname="docId"
     name="Deals"
   />
   <LostReasonModal
@@ -317,8 +313,10 @@
 import DeleteLinkedDocModal from '@/components/DeleteLinkedDocModal.vue'
 import ErrorPage from '@/components/ErrorPage.vue'
 import Icon from '@/components/Icon.vue'
+import HashIcon from '@/components/Icons/HashIcon.vue'
+import MobileIcon from '@/components/Icons/MobileIcon.vue'
 import Resizer from '@/components/Resizer.vue'
-import LoadingIndicator from '@/components/Icons/LoadingIndicator.vue'
+import ContactIcon from '@/components/Icons/ContactIcon.vue'
 import ActivityIcon from '@/components/Icons/ActivityIcon.vue'
 import EmailIcon from '@/components/Icons/EmailIcon.vue'
 import Email2Icon from '@/components/Icons/Email2Icon.vue'
@@ -359,13 +357,12 @@ import {
   Dropdown,
   Tooltip,
   Avatar,
-  Tabs,
   Breadcrumbs,
   call,
   usePageMeta,
   toast,
+  FileUploader,
 } from 'frappe-ui'
-import { useOnboarding } from 'frappe-ui/frappe'
 import {
   ref,
   computed,
@@ -377,20 +374,19 @@ import {
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useActiveTabManager } from '@/composables/useActiveTabManager'
+import Tabs from '@/components/frappe-ui/Tabs.vue'
+import { isMobileView } from '@/composables/settings'
 
 const { brand } = getSettings()
 const { $dialog, $socket, makeCall } = globalStore()
 const { statusOptions, getDealStatus } = statusesStore()
 const { doctypeMeta } = getMeta('CRM Deal')
 
-const { updateOnboardingStep, isOnboardingStepsCompleted } =
-  useOnboarding('frappecrm')
-
 const route = useRoute()
 const router = useRouter()
 
 const props = defineProps({
-  dealId: {
+  docId: {
     type: String,
     required: true,
   },
@@ -402,7 +398,7 @@ const showDeleteLinkedDocModal = ref(false)
 
 const { triggerOnChange, assignees, document, scripts, error } = useDocument(
   'CRM Deal',
-  props.dealId,
+  props.docId,
 )
 
 const doc = computed(() => document.doc || {})
@@ -496,14 +492,14 @@ const breadcrumbs = computed(() => {
 
   items.push({
     label: title.value,
-    route: { name: 'Deal', params: { dealId: props.dealId } },
+    route: { name: 'Deal', params: { docId: props.docId } },
   })
   return items
 })
 
 const title = computed(() => {
   let t = doctypeMeta['CRM Deal']?.title_field || 'name'
-  return doc.value?.[t] || props.dealId
+  return doc.value?.[t] || props.docId
 })
 
 const statuses = computed(() => {
@@ -526,6 +522,11 @@ const tabs = computed(() => {
       name: 'Activity',
       label: __('Activity'),
       icon: ActivityIcon,
+    },
+    {
+      name: 'Contacts',
+      label: __('Contacts'),
+      icon: ContactIcon,
     },
     {
       name: 'Emails',
@@ -612,26 +613,6 @@ function getParsedSections(_sections) {
 const showContactModal = ref(false)
 const _contact = ref({})
 
-function contactOptions(contact) {
-  let options = [
-    {
-      label: __('Remove'),
-      icon: 'trash-2',
-      onClick: () => removeContact(contact.name),
-    },
-  ]
-
-  if (!contact.is_primary) {
-    options.push({
-      label: __('Set as Primary Contact'),
-      icon: h(SuccessIcon, { class: 'h-4 w-4' }),
-      onClick: () => setPrimaryContact(contact.name),
-    })
-  }
-
-  return options
-}
-
 async function addContact(contact) {
   if (dealContacts.data?.find((c) => c.name === contact)) {
     toast.error(__('Contact already added'))
@@ -639,7 +620,7 @@ async function addContact(contact) {
   }
 
   let d = await call('crm.fcrm.doctype.crm_deal.crm_deal.add_contact', {
-    deal: props.dealId,
+    deal: props.docId,
     contact,
   })
   if (d) {
@@ -650,7 +631,7 @@ async function addContact(contact) {
 
 async function removeContact(contact) {
   let d = await call('crm.fcrm.doctype.crm_deal.crm_deal.remove_contact', {
-    deal: props.dealId,
+    deal: props.docId,
     contact,
   })
   if (d) {
@@ -661,7 +642,7 @@ async function removeContact(contact) {
 
 async function setPrimaryContact(contact) {
   let d = await call('crm.fcrm.doctype.crm_deal.crm_deal.set_primary_contact', {
-    deal: props.dealId,
+    deal: props.docId,
     contact,
   })
   if (d) {
@@ -672,8 +653,8 @@ async function setPrimaryContact(contact) {
 
 const dealContacts = createResource({
   url: 'crm.fcrm.doctype.crm_deal.api.get_deal_contacts',
-  params: { name: props.dealId },
-  cache: ['deal_contacts', props.dealId],
+  params: { name: props.docId },
+  cache: ['deal_contacts', props.docId],
   transform: (data) => {
     data.forEach((contact) => {
       contact.opened = false
@@ -707,10 +688,6 @@ async function triggerStatusChange(value) {
 }
 
 function updateField(name, value) {
-  if (name == 'status' && !isOnboardingStepsCompleted.value) {
-    updateOnboardingStep('change_deal_status')
-  }
-
   value = Array.isArray(name) ? '' : value
   let oldValues = Array.isArray(name) ? {} : doc.value[name]
 

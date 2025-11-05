@@ -58,13 +58,11 @@ import LockKeyhole from '~icons/lucide/lock-keyhole'
 import Password from '@/components/Controls/Password.vue'
 import { usersStore } from '@/stores/users'
 import { Dialog, toast, createResource } from 'frappe-ui'
-import { useOnboarding } from 'frappe-ui/frappe'
 import { ref, watch } from 'vue'
 
 const show = defineModel()
 
 const { getUser } = usersStore()
-const { updateOnboardingStep } = useOnboarding('frappecrm')
 
 const newPassword = ref('')
 const confirmPassword = ref('')
@@ -84,7 +82,6 @@ const updatePassword = createResource({
     }
   },
   onSuccess: () => {
-    updateOnboardingStep('setup_your_password')
     toast.success(__('Password updated successfully'))
     show.value = false
     newPassword.value = ''

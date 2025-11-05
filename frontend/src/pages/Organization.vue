@@ -12,22 +12,30 @@
         v-if="organization._actions?.length"
         :actions="organization._actions"
       />
+      <Button
+        :tooltip="__('Delete')"
+        variant="subtle"
+        theme="red"
+        icon="trash-2"
+        @click="deleteOrganization()"
+        class="!size-12"
+      />
     </template>
   </LayoutHeader>
-  <div v-if="organization.doc" ref="parentRef" class="flex h-full">
-    <Resizer
-      v-if="organization.doc"
-      :parent="$refs.parentRef"
-      class="flex h-full flex-col overflow-hidden border-r"
+  <div v-if="organization.doc" ref="parentRef" class="h-full">
+    <div
+      class="mx-1 md:mx-3 lg:mx-8 flex flex-col items-start px-4 py-3 md:px-6 md:py-5 lg:items-center lg:flex-row rounded-xl bg-gold dark:bg-[#313131] gap-4 mt-5"
+      style="box-shadow: -9px 9px 40px 0px #00000014"
     >
-      <div class="border-b">
+      <div class="flex items-center justify-between">
         <FileUploader
+          class=""
           @success="changeOrganizationImage"
           :validateFile="validateIsImageFile"
         >
           <template #default="{ openFileSelector, error }">
             <div class="flex flex-col items-start justify-start gap-4 p-5">
-              <div class="flex gap-4 items-center">
+              <div class="flex gap-5 items-center">
                 <div class="group relative h-15.5 w-15.5">
                   <Avatar
                     size="3xl"
@@ -71,69 +79,28 @@
                   </component>
                 </div>
                 <div class="flex flex-col gap-2 truncate">
-                  <div class="truncate text-2xl font-medium text-ink-gray-9">
+                  <div class="truncate text-2xl font-medium text-subheading">
                     <span>{{ organization.doc.name }}</span>
                   </div>
-                  <div
-                    v-if="organization.doc.website"
-                    class="flex items-center gap-1.5 text-base text-ink-gray-8"
-                  >
-                    <WebsiteIcon class="size-4" />
-                    <span>{{ website(organization.doc.website) }}</span>
+                  <div class="truncate text-base font-medium text-[#666] flex items-center gap-1">
+                    <FeatherIcon name="users" class="size-4" />
+
+                    <span>{{ organization.doc.no_of_employees }}</span>
                   </div>
-                  <ErrorMessage :message="__(error)" />
+                  <div v-if="organization.doc.address" class="truncate text-base font-medium text-[#666] flex items-center gap-1">
+                    <FeatherIcon name="map-pin" class="size-4" />
+                    <span>{{ organization.doc.address }}</span>
+                  </div>
+                  
                 </div>
-              </div>
-              <div class="flex gap-1.5">
-                <Button
-                  :label="__('Delete')"
-                  theme="red"
-                  size="sm"
-                  iconLeft="trash-2"
-                  @click="deleteOrganization()"
-                />
-                <Button
-                  :tooltip="__('Open website')"
-                  icon="link"
-                  @click="openWebsite"
-                />
               </div>
             </div>
           </template>
         </FileUploader>
+        <ErrorMessage :message="__(error)" />
       </div>
-      <div
-        v-if="sections.data"
-        class="flex flex-1 flex-col justify-between overflow-hidden"
-      >
-        <SidePanelLayout
-          :sections="sections.data"
-          doctype="CRM Organization"
-          :docname="organization.doc.name"
-          @reload="sections.reload"
-          @beforeFieldChange="beforeFieldChange"
-        />
-      </div>
-    </Resizer>
+    </div>
     <Tabs as="div" v-model="tabIndex" :tabs="tabs">
-      <template #tab-item="{ tab, selected }">
-        <button
-          class="group flex items-center gap-2 border-b border-transparent py-2.5 text-base text-ink-gray-5 duration-300 ease-in-out hover:border-outline-gray-3 hover:text-ink-gray-9"
-          :class="{ 'text-ink-gray-9': selected }"
-        >
-          <component v-if="tab.icon" :is="tab.icon" class="h-5" />
-          {{ __(tab.label) }}
-          <Badge
-            class="group-hover:bg-surface-gray-7"
-            :class="[selected ? 'bg-surface-gray-7' : 'bg-gray-600']"
-            variant="solid"
-            theme="gray"
-            size="sm"
-          >
-            {{ tab.count }}
-          </Badge>
-        </button>
-      </template>
       <template #tab-panel="{ tab }">
         <DealsListView
           class="mt-4"
@@ -151,7 +118,7 @@
         />
         <div
           v-if="!rows.length"
-          class="grid flex-1 place-items-center text-xl font-medium text-ink-gray-4"
+          class="grid flex-1 place-items-center text-xl font-medium text-ink-gray-4 mt-10 min-h-[calc(100vh-500px)]"
         >
           <div class="flex flex-col items-center justify-center space-y-3">
             <component :is="tab.icon" class="!h-10 !w-10" />
@@ -170,15 +137,13 @@
     v-if="showDeleteLinkedDocModal"
     v-model="showDeleteLinkedDocModal"
     :doctype="'CRM Organization'"
-    :docname="props.organizationId"
+    :docname="props.docId"
     name="Organizations"
   />
 </template>
 
 <script setup>
 import ErrorPage from '@/components/ErrorPage.vue'
-import Resizer from '@/components/Resizer.vue'
-import SidePanelLayout from '@/components/SidePanelLayout.vue'
 import Icon from '@/components/Icon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import DealsListView from '@/components/ListViews/DealsListView.vue'
@@ -197,13 +162,17 @@ import { getMeta } from '@/stores/meta'
 import { usersStore } from '@/stores/users'
 import { statusesStore } from '@/stores/statuses'
 import { getView } from '@/utils/view'
-import { formatDate, timeAgo, validateIsImageFile, setupCustomizations } from '@/utils'
+import {
+  formatDate,
+  timeAgo,
+  validateIsImageFile,
+  setupCustomizations,
+} from '@/utils'
 import {
   Breadcrumbs,
   Avatar,
   FileUploader,
   Dropdown,
-  Tabs,
   createListResource,
   usePageMeta,
   createResource,
@@ -212,9 +181,9 @@ import {
 } from 'frappe-ui'
 import { h, computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
+import Tabs from "@/components/frappe-ui/Tabs.vue"
 const props = defineProps({
-  organizationId: {
+  docId: {
     type: String,
     required: true,
   },
@@ -236,7 +205,7 @@ const showDeleteLinkedDocModal = ref(false)
 
 const { document: organization, scripts } = useDocument(
   'CRM Organization',
-  props.organizationId,
+  props.docId,
 )
 
 const breadcrumbs = computed(() => {
@@ -265,7 +234,7 @@ const breadcrumbs = computed(() => {
     label: title.value,
     route: {
       name: 'Organization',
-      params: { organizationId: props.organizationId },
+      params: { docId: props.docId },
     },
   })
   return items
@@ -273,7 +242,7 @@ const breadcrumbs = computed(() => {
 
 const title = computed(() => {
   let t = doctypeMeta['CRM Organization']?.title_field || 'name'
-  return organization.doc?.[t] || props.organizationId
+  return organization.doc?.[t] || props.docId
 })
 
 usePageMeta(() => {
@@ -297,12 +266,12 @@ function beforeFieldChange(data) {
   if (data?.hasOwnProperty('organization_name')) {
     call('frappe.client.rename_doc', {
       doctype: 'CRM Organization',
-      old_name: props.organizationId,
+      old_name: props.docId,
       new_name: data.organization_name,
     }).then(() => {
       router.push({
         name: 'Organization',
-        params: { organizationId: data.organization_name },
+        params: { docId: data.organization_name },
       })
     })
   } else {
@@ -367,7 +336,7 @@ const tabs = [
 const deals = createListResource({
   type: 'list',
   doctype: 'CRM Deal',
-  cache: ['deals', props.organizationId],
+  cache: ['deals', props.docId],
   fields: [
     'name',
     'organization',
@@ -380,7 +349,7 @@ const deals = createListResource({
     'modified',
   ],
   filters: {
-    organization: props.organizationId,
+    organization: props.docId,
   },
   orderBy: 'modified desc',
   pageLength: 20,
@@ -390,7 +359,7 @@ const deals = createListResource({
 const contacts = createListResource({
   type: 'list',
   doctype: 'Contact',
-  cache: ['contacts', props.organizationId],
+  cache: ['contacts', props.docId],
   fields: [
     'name',
     'full_name',
@@ -401,7 +370,7 @@ const contacts = createListResource({
     'modified',
   ],
   filters: {
-    company_name: props.organizationId,
+    company_name: props.docId,
   },
   orderBy: 'modified desc',
   pageLength: 20,

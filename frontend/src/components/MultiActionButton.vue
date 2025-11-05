@@ -2,6 +2,7 @@
   <div class="flex items-center">
     <Button
       :variant="$attrs.variant"
+      theme="green"
       class="border-0"
       :label="activeButton.label"
       :size="$attrs.size"

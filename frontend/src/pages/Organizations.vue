@@ -8,12 +8,7 @@
         v-if="organizationsListView?.customListActions"
         :actions="organizationsListView.customListActions"
       />
-      <Button
-        variant="solid"
-        :label="__('Create')"
-        iconLeft="plus"
-        @click="showOrganizationModal = true"
-      />
+      <CreateDocumentButton label="New Organization" @click="showOrganizationModal = true" />
     </template>
   </LayoutHeader>
   <ViewControls
@@ -24,29 +19,30 @@
     v-model:updatedPageCount="updatedPageCount"
     doctype="CRM Organization"
   />
-  <OrganizationsListView
-    ref="organizationsListView"
-    v-if="organizations.data && rows.length"
-    v-model="organizations.data.page_length_count"
-    v-model:list="organizations"
-    :rows="rows"
-    :columns="organizations.data.columns"
-    :options="{
-      showTooltip: false,
-      resizeColumn: true,
-      rowCount: organizations.data.row_count,
-      totalCount: organizations.data.total_count,
-    }"
-    @loadMore="() => loadMore++"
-    @columnWidthUpdated="() => triggerResize++"
-    @updatePageCount="(count) => (updatedPageCount = count)"
-    @applyFilter="(data) => viewControls.applyFilter(data)"
-    @applyLikeFilter="(data) => viewControls.applyLikeFilter(data)"
-    @likeDoc="(data) => viewControls.likeDoc(data)"
-    @selectionsChanged="
-      (selections) => viewControls.updateSelections(selections)
-    "
-  />
+  <MainListView
+		ref="organizationsListView"
+		v-if="organizations.data && rows.length"
+		v-model="organizations.data.page_length_count"
+		v-model:list="organizations"
+		doctype="CRM Organization"
+		routeName="Organization"
+		:rows="rows"
+		:columns="organizations.data.columns"
+		:options="{
+			showTooltip: false,
+			resizeColumn: true,
+			rowCount: organizations.data.row_count,
+			totalCount: organizations.data.total_count,
+		}"
+		@loadMore="() => loadMore++"
+		@columnWidthUpdated="() => triggerResize++"
+		@updatePageCount="(count) => (updatedPageCount = count)"
+		@applyFilter="(data) => viewControls.applyFilter(data)"
+		@applyLikeFilter="(data) => viewControls.applyLikeFilter(data)"
+		@likeDoc="(data) => viewControls.likeDoc(data)"
+		@selectionsChanged="(selections) => viewControls.updateSelections(selections)"
+	/>
+
   <div
     v-else-if="organizations.data"
     class="flex h-full items-center justify-center"
@@ -74,12 +70,12 @@ import CustomActions from '@/components/CustomActions.vue'
 import OrganizationsIcon from '@/components/Icons/OrganizationsIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
-import OrganizationsListView from '@/components/ListViews/OrganizationsListView.vue'
+import MainListView from '@/components/ListViews/MainListView.vue'
 import ViewControls from '@/components/ViewControls.vue'
 import { getMeta } from '@/stores/meta'
 import { formatDate, timeAgo, website } from '@/utils'
-import { call } from 'frappe-ui'
 import { ref, computed } from 'vue'
+import CreateDocumentButton from '@/components/CreateDocumentButton.vue'
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('CRM Organization')

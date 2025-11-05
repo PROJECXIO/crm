@@ -8,12 +8,7 @@
         v-if="tasksListView?.customListActions"
         :actions="tasksListView.customListActions"
       />
-      <Button
-        variant="solid"
-        :label="__('Create')"
-        iconLeft="plus"
-        @click="createTask"
-      />
+      <CreateDocumentButton label="New Task" @click="createTask" />
     </template>
   </LayoutHeader>
   <ViewControls
@@ -152,11 +147,12 @@
       </div>
     </template>
   </KanbanView>
-  <TasksListView
+  <MainListView
     ref="tasksListView"
     v-else-if="tasks.data && rows.length"
     v-model="tasks.data.page_length_count"
     v-model:list="tasks"
+		doctype="CRM Deal"
     :rows="rows"
     :columns="tasks.data.columns"
     :options="{
@@ -164,6 +160,7 @@
       resizeColumn: true,
       rowCount: tasks.data.row_count,
       totalCount: tasks.data.total_count,
+      onRowClick: row => showTask(row.name)
     }"
     @loadMore="() => loadMore++"
     @columnWidthUpdated="() => triggerResize++"
@@ -206,7 +203,7 @@ import TaskPriorityIcon from '@/components/Icons/TaskPriorityIcon.vue'
 import Email2Icon from '@/components/Icons/Email2Icon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import ViewControls from '@/components/ViewControls.vue'
-import TasksListView from '@/components/ListViews/TasksListView.vue'
+import MainListView from '@/components/ListViews/MainListView.vue'
 import KanbanView from '@/components/Kanban/KanbanView.vue'
 import TaskModal from '@/components/Modals/TaskModal.vue'
 import { getMeta } from '@/stores/meta'
@@ -215,6 +212,7 @@ import { formatDate, timeAgo } from '@/utils'
 import { Tooltip, Avatar, TextEditor, Dropdown, call } from 'frappe-ui'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import CreateDocumentButton from '@/components/CreateDocumentButton.vue'
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('CRM Task')

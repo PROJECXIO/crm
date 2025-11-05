@@ -8,10 +8,10 @@ import router from './router'
 import translationPlugin from './translation'
 import { posthogPlugin } from './telemetry'
 import App from './App.vue'
+import Button from '@/components/frappe-ui/Button.vue'
 
 import {
   FrappeUI,
-  Button,
   Input,
   TextInput,
   FormControl,

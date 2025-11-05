@@ -10,3 +10,9 @@ export const userResource = createResource({
     }
   },
 })
+
+
+export const userEmployeeResource = createResource({
+  url: "hrms.api.get_current_employee_info",
+  cache: "user_employee",
+})

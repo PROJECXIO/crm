@@ -105,6 +105,7 @@
               class="whitespace-nowrap mr-2"
               variant="ghost"
               :label="__('Add filter')"
+              theme="green"
               iconLeft="plus"
               @click="togglePopover()"
             />
@@ -123,13 +124,15 @@
     <div class="flex gap-1">
       <Button
         :label="__('Save')"
+        theme="green"
+        variant="solid"
         :loading="updateQuickFilters.loading"
         @click="saveQuickFilters"
       />
-      <Button icon="x" @click="customizeQuickFilter = false" />
+      <Button icon="x" @click="customizeQuickFilter = false" theme="red" />
     </div>
   </div>
-  <div v-else class="flex items-center justify-between gap-2 px-5 py-4">
+  <div v-else class="flex items-center justify-between gap-2 px-5 py-4 bg-sidebar-bg ">
     <FadedScrollableDiv
       class="flex flex-1 items-center overflow-x-auto -ml-1"
       orientation="horizontal"
@@ -151,8 +154,8 @@
         v-if="viewUpdated && route.query.view && (!view.public || isManager())"
         class="flex items-center gap-2 border-r pr-2"
       >
-        <Button :label="__('Cancel')" @click="cancelChanges" />
-        <Button :label="__('Save Changes')" @click="saveView" />
+        <Button :label="__('Cancel')" @click="cancelChanges" theme="red" />
+        <Button :label="__('Save Changes')" @click="saveView" theme="green" variant="solid" />
       </div>
       <div class="flex items-center gap-2">
         <Button
@@ -160,6 +163,7 @@
           :icon="RefreshIcon"
           :loading="isLoading"
           @click="reload()"
+          theme="ghost"
         />
         <GroupBy
           v-if="route.params.viewType === 'group_by'"
@@ -202,6 +206,7 @@
                 {
                   label: __('Export'),
                   icon: () => h(ExportIcon, { class: 'h-4 w-4' }),
+                  class: 'font-semibold',
                   onClick: () => (showExportDialog = true),
                   condition: () =>
                     !options.hideColumnsButton &&
@@ -218,7 +223,7 @@
           ]"
         >
           <template #default>
-            <Button :tooltip="__('More Options')" icon="more-horizontal" />
+            <Button :tooltip="__('More Options')" icon="more-horizontal" theme="green" variant="solid" size="md" />
           </template>
         </Dropdown>
       </div>
@@ -316,7 +321,6 @@ import { isEmoji } from '@/utils'
 import {
   Tooltip,
   createResource,
-  Dropdown,
   toast,
   call,
   FeatherIcon,
@@ -328,6 +332,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { isMobileView } from '@/composables/settings'
 import Draggable from 'vuedraggable'
 import _ from 'lodash'
+import Dropdown from '@/components/frappe-ui/Dropdown.vue'
 
 const props = defineProps({
   doctype: {

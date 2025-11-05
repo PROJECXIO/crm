@@ -98,10 +98,8 @@
 import { validateEmail, convertArrayToString } from '@/utils'
 import { usersStore } from '@/stores/users'
 import { createListResource, createResource, FormControl } from 'frappe-ui'
-import { useOnboarding } from 'frappe-ui/frappe'
 import { ref, computed } from 'vue'
 
-const { updateOnboardingStep } = useOnboarding('frappecrm')
 const { users, isAdmin, isManager } = usersStore()
 
 const invitees = ref([])
@@ -185,7 +183,6 @@ const inviteByEmail = createResource({
 
     invitees.value = []
     pendingInvitations.reload()
-    updateOnboardingStep('invite_your_team')
   },
   onError(err) {
     error.value = err?.messages?.[0]

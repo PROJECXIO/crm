@@ -1,7 +1,7 @@
 <template>
   <Popover placement="bottom-end">
     <template #target="{ togglePopover }">
-      <Button :label="__('Columns')" @click="togglePopover">
+      <Button :label="__('Columns')" @click="togglePopover" theme="green" variant="solid" class="font-semibold">
         <template v-if="hideLabel">
           <ColumnsIcon class="h-4" />
         </template>
@@ -42,6 +42,7 @@
                   </Button>
                   <Button
                     variant="ghost"
+                    theme="red"
                     class="!h-5 w-5 !p-1"
                     @click="removeColumn(element)"
                   >
@@ -63,8 +64,9 @@
             >
               <template #target="{ togglePopover }">
                 <Button
-                  class="w-full !justify-start !text-ink-gray-5"
+                  class="w-full !justify-start"
                   variant="ghost"
+                  theme="green"
                   :label="__('Add Column')"
                   iconLeft="plus"
                   @click="togglePopover"
@@ -73,16 +75,18 @@
             </Autocomplete>
             <Button
               v-if="columnsUpdated"
-              class="w-full !justify-start !text-ink-gray-5"
+              class="w-full !justify-start"
               variant="ghost"
+              theme="red"
               :label="__('Reset Changes')"
               :iconLeft="ReloadIcon"
               @click="reset(close)"
             />
             <Button
               v-if="!is_default"
-              class="w-full !justify-start !text-ink-gray-5"
+              class="w-full !justify-start"
               variant="ghost"
+              theme="blue"
               :label="__('Reset to Default')"
               :iconLeft="ReloadIcon"
               @click="resetToDefault(close)"
@@ -101,6 +105,7 @@
                 v-model="column.label"
                 class="sm:w-full w-52"
                 :placeholder="__('First Name')"
+                variant="outline"
               />
               <FormControl
                 type="text"
@@ -114,18 +119,22 @@
                     'Width can be in number, pixel or rem (eg. 3, 30px, 10rem)',
                   )
                 "
+                variant="outline"
+
                 :debounce="500"
               />
             </div>
             <div class="flex w-full gap-2 border-t pt-2">
               <Button
                 variant="subtle"
+                theme="red"
                 :label="__('Cancel')"
                 class="w-full flex-1"
                 @click="cancelUpdate"
               />
               <Button
                 variant="solid"
+                theme="green"
                 :label="__('Update')"
                 class="w-full flex-1"
                 @click="updateColumn(column)"

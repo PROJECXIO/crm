@@ -94,7 +94,7 @@
                 >
                   <li
                     :class="[
-                      'flex cursor-pointer items-center rounded px-2.5 py-1.5 text-base',
+                      'flex cursor-pointer items-center rounded px-2.5 py-1.5 text-base hover:bg-bg-green hover:px-2.5 group transition-all duration-200',
                       { 'bg-surface-gray-3': active },
                     ]"
                   >
@@ -106,7 +106,7 @@
                       name="item-label"
                       v-bind="{ active, selected, option }"
                     >
-                      <div class="flex-1 truncate text-ink-gray-7">
+                      <div class="flex-1 truncate text-ink-gray-7 group-hover:text-white group-hover:text-base">
                         {{ option.label }}
                       </div>
                     </slot>
@@ -157,7 +157,7 @@ const props = defineProps({
   },
   size: {
     type: String,
-    default: 'sm',
+    default: 'md',
   },
   variant: {
     type: String,
@@ -268,8 +268,8 @@ const inputClasses = computed(() => {
   let sizeClasses = {
     sm: 'text-base rounded h-7',
     md: 'text-base rounded h-8',
-    lg: 'text-lg rounded-md h-10',
-    xl: 'text-xl rounded-md h-10',
+    lg: 'text-lg rounded-md !h-10',
+    xl: 'text-xl rounded-md !h-12',
   }[props.size]
 
   let paddingClasses = {

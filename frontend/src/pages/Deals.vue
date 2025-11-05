@@ -8,12 +8,7 @@
         v-if="dealsListView?.customListActions"
         :actions="dealsListView.customListActions"
       />
-      <Button
-        variant="solid"
-        :label="__('Create')"
-        iconLeft="plus"
-        @click="showDealModal = true"
-      />
+      <CreateDocumentButton label="New Deal" @click="showDealModal = true" />
     </template>
   </LayoutHeader>
   <ViewControls
@@ -33,7 +28,7 @@
     :options="{
       getRoute: (row) => ({
         name: 'Deal',
-        params: { dealId: row.name },
+        params: { docId: row.name },
         query: { view: route.query.view, viewType: route.params.viewType },
       }),
       onNewClick: (column) => onNewClick(column),
@@ -203,29 +198,29 @@
       </div>
     </template>
   </KanbanView>
-  <DealsListView
-    ref="dealsListView"
-    v-else-if="deals.data && rows.length"
-    v-model="deals.data.page_length_count"
-    v-model:list="deals"
-    :rows="rows"
-    :columns="deals.data.columns"
-    :options="{
-      showTooltip: false,
-      resizeColumn: true,
-      rowCount: deals.data.row_count,
-      totalCount: deals.data.total_count,
-    }"
-    @loadMore="() => loadMore++"
-    @columnWidthUpdated="() => triggerResize++"
-    @updatePageCount="(count) => (updatedPageCount = count)"
-    @applyFilter="(data) => viewControls.applyFilter(data)"
-    @applyLikeFilter="(data) => viewControls.applyLikeFilter(data)"
-    @likeDoc="(data) => viewControls.likeDoc(data)"
-    @selectionsChanged="
-      (selections) => viewControls.updateSelections(selections)
-    "
-  />
+	<MainListView
+		ref="dealsListView"
+		v-else-if="deals.data && rows.length"
+		v-model="deals.data.page_length_count"
+		v-model:list="deals"
+		doctype="CRM Deal"
+		routeName="Deal"
+		:rows="rows"
+		:columns="deals.data.columns"
+		:options="{
+			showTooltip: false,
+			resizeColumn: true,
+			rowCount: deals.data.row_count,
+			totalCount: deals.data.total_count,
+		}"
+		@loadMore="() => loadMore++"
+		@columnWidthUpdated="() => triggerResize++"
+		@updatePageCount="(count) => (updatedPageCount = count)"
+		@applyFilter="(data) => viewControls.applyFilter(data)"
+		@applyLikeFilter="(data) => viewControls.applyLikeFilter(data)"
+		@likeDoc="(data) => viewControls.likeDoc(data)"
+		@selectionsChanged="(selections) => viewControls.updateSelections(selections)"
+	/>
   <div v-else-if="deals.data" class="flex h-full items-center justify-center">
     <div
       class="flex flex-col items-center gap-3 text-xl font-medium text-ink-gray-4"
@@ -272,7 +267,7 @@ import CommentIcon from '@/components/Icons/CommentIcon.vue'
 import IndicatorIcon from '@/components/Icons/IndicatorIcon.vue'
 import DealsIcon from '@/components/Icons/DealsIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
-import DealsListView from '@/components/ListViews/DealsListView.vue'
+import MainListView from '@/components/ListViews/MainListView.vue'
 import KanbanView from '@/components/Kanban/KanbanView.vue'
 import DealModal from '@/components/Modals/DealModal.vue'
 import NoteModal from '@/components/Modals/NoteModal.vue'
@@ -288,6 +283,7 @@ import { formatDate, timeAgo, website, formatTime } from '@/utils'
 import { Tooltip, Avatar, Dropdown } from 'frappe-ui'
 import { useRoute } from 'vue-router'
 import { ref, reactive, computed, h } from 'vue'
+import CreateDocumentButton from '@/components/CreateDocumentButton.vue'
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('CRM Deal')

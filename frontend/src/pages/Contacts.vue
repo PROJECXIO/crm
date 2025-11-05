@@ -8,12 +8,7 @@
         v-if="contactsListView?.customListActions"
         :actions="contactsListView.customListActions"
       />
-      <Button
-        variant="solid"
-        :label="__('Create')"
-        iconLeft="plus"
-        @click="showContactModal = true"
-      />
+      <CreateDocumentButton label="New Contact" @click="showContactModal = true" />
     </template>
   </LayoutHeader>
   <ViewControls
@@ -24,29 +19,29 @@
     v-model:updatedPageCount="updatedPageCount"
     doctype="Contact"
   />
-  <ContactsListView
-    ref="contactsListView"
-    v-if="contacts.data && rows.length"
-    v-model="contacts.data.page_length_count"
-    v-model:list="contacts"
-    :rows="rows"
-    :columns="contacts.data.columns"
-    :options="{
-      showTooltip: false,
-      resizeColumn: true,
-      rowCount: contacts.data.row_count,
-      totalCount: contacts.data.total_count,
-    }"
-    @loadMore="() => loadMore++"
-    @columnWidthUpdated="() => triggerResize++"
-    @updatePageCount="(count) => (updatedPageCount = count)"
-    @applyFilter="(data) => viewControls.applyFilter(data)"
-    @applyLikeFilter="(data) => viewControls.applyLikeFilter(data)"
-    @likeDoc="(data) => viewControls.likeDoc(data)"
-    @selectionsChanged="
-      (selections) => viewControls.updateSelections(selections)
-    "
-  />
+	<MainListView
+		ref="contactsListView"
+		v-if="contacts.data && rows.length"
+		v-model="contacts.data.page_length_count"
+		v-model:list="contacts"
+		doctype="Contact"
+		routeName="Contact"
+		:rows="rows"
+		:columns="contacts.data.columns"
+		:options="{
+			showTooltip: false,
+			resizeColumn: true,
+			rowCount: contacts.data.row_count,
+			totalCount: contacts.data.total_count,
+		}"
+		@loadMore="() => loadMore++"
+		@columnWidthUpdated="() => triggerResize++"
+		@updatePageCount="(count) => (updatedPageCount = count)"
+		@applyFilter="(data) => viewControls.applyFilter(data)"
+		@applyLikeFilter="(data) => viewControls.applyLikeFilter(data)"
+		@likeDoc="(data) => viewControls.likeDoc(data)"
+		@selectionsChanged="(selections) => viewControls.updateSelections(selections)"
+	/>
   <div
     v-else-if="contacts.data"
     class="flex h-full items-center justify-center"
@@ -76,12 +71,13 @@ import CustomActions from '@/components/CustomActions.vue'
 import ContactsIcon from '@/components/Icons/ContactsIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import ContactModal from '@/components/Modals/ContactModal.vue'
-import ContactsListView from '@/components/ListViews/ContactsListView.vue'
+import MainListView from '@/components/ListViews/MainListView.vue'
 import ViewControls from '@/components/ViewControls.vue'
 import { getMeta } from '@/stores/meta'
 import { organizationsStore } from '@/stores/organizations.js'
 import { formatDate, timeAgo } from '@/utils'
 import { ref, computed } from 'vue'
+import CreateDocumentButton from '@/components/CreateDocumentButton.vue'
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('Contact')

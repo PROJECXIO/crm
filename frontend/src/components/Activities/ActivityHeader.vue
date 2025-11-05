@@ -1,14 +1,16 @@
 <template>
   <div
     v-if="title !== 'Data'"
-    class="mx-4 my-3 flex items-center justify-between text-lg font-medium sm:mx-10 sm:mb-4 sm:mt-8"
+    class="px-4 flex items-center justify-between text-lg font-medium sm:px-10 bg-gray-50/50"
   >
     <div class="flex h-8 items-center text-xl font-semibold text-ink-gray-8">
-      {{ __(title) }}
+      <!-- {{ __(title) }} -->
     </div>
     <Button
       v-if="title == 'Emails'"
       variant="solid"
+      theme="green"
+      size="md"
       :label="__('New Email')"
       iconLeft="plus"
       @click="emailBox.show = true"
@@ -16,6 +18,8 @@
     <Button
       v-else-if="title == 'Comments'"
       variant="solid"
+      theme="green"
+      size="md"
       :label="__('New Comment')"
       iconLeft="plus"
       @click="emailBox.showComment = true"
@@ -23,11 +27,15 @@
     <MultiActionButton
       v-else-if="title == 'Calls'"
       variant="solid"
+      theme="green"
+      size="md"
       :options="callActions"
     />
     <Button
       v-else-if="title == 'Events'"
       variant="solid"
+      theme="green"
+      size="md"
       @click="modalRef.showEvent()"
     >
       <template #prefix>
@@ -38,6 +46,8 @@
     <Button
       v-else-if="title == 'Notes'"
       variant="solid"
+      theme="green"
+      size="md"
       :label="__('New Note')"
       iconLeft="plus"
       @click="modalRef.showNote()"
@@ -45,6 +55,8 @@
     <Button
       v-else-if="title == 'Tasks'"
       variant="solid"
+      theme="green"
+      size="md"
       :label="__('New Task')"
       iconLeft="plus"
       @click="modalRef.showTask()"
@@ -52,6 +64,8 @@
     <Button
       v-else-if="title == 'Attachments'"
       variant="solid"
+      theme="green"
+      size="md"
       :label="__('Upload Attachment')"
       iconLeft="plus"
       @click="showFilesUploader = true"
@@ -63,6 +77,8 @@
       />
       <Button
         variant="solid"
+        theme="green"
+        size="md"
         :label="__('New Message')"
         iconLeft="plus"
         @click="whatsappBox.show()"
@@ -72,6 +88,8 @@
       <template v-slot="{ open }">
         <Button
           variant="solid"
+          theme="green"
+          size="md"
           class="flex items-center gap-1"
           :label="__('New')"
           iconLeft="plus"

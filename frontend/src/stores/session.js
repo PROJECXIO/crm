@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { createResource } from 'frappe-ui'
-import { userResource } from './user'
+import { userResource, userEmployeeResource } from './user'
 import router from '@/router'
 import { ref, computed } from 'vue'
 
@@ -24,6 +24,7 @@ export const sessionStore = defineStore('crm-session', () => {
     },
     onSuccess() {
       userResource.reload()
+      userEmployeeResource.reload()
       user.value = sessionUser()
       login.reset()
       router.replace({ path: '/' })

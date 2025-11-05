@@ -8,12 +8,13 @@
   />
   <FormControl
     v-else-if="filter.fieldtype === 'Select'"
-    class="form-control cursor-pointer [&_select]:cursor-pointer"
+    class="form-control cursor-pointer [&_select]:cursor-pointer w-36"
     type="select"
     v-model="filter.value"
     :options="filter.options"
     :placeholder="filter.label"
     @change.stop="updateFilter(filter, $event.target.value)"
+    variant="outline"
   />
   <Link
     v-else-if="filter.fieldtype === 'Link'"
@@ -21,10 +22,13 @@
     :doctype="filter.options"
     :placeholder="filter.label"
     @change="(data) => updateFilter(filter, data)"
+    variant="outline"
+    class="w-36"
+
   />
   <component
     v-else-if="['Date', 'Datetime'].includes(filter.fieldtype)"
-    class="border-none"
+    class="border-none w-36"
     :is="filter.fieldtype === 'Date' ? DatePicker : DateTimePicker"
     :value="filter.value"
     @change="(v) => updateFilter(filter, v)"
@@ -36,6 +40,8 @@
     type="text"
     :placeholder="filter.label"
     @input.stop="debouncedFn(filter, $event.target.value)"
+    variant="outline"
+    class="w-36"
   />
 </template>
 <script setup>

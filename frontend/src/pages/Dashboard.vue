@@ -10,26 +10,45 @@
           :label="__('Refresh')"
           :iconLeft="LucideRefreshCcw"
           @click="dashboardItems.reload"
+          variant="solid"
+          theme="green"
+          size="lg"
         />
         <Button
           v-if="!editing && isAdmin()"
           :label="__('Edit')"
           :iconLeft="LucidePenLine"
           @click="enableEditing"
+          variant="solid"
+          theme="blue"
+          size="lg"
         />
         <Button
           v-if="editing"
           :label="__('Chart')"
           iconLeft="plus"
           @click="showAddChartModal = true"
+          variant="solid"
+          theme="green"
+          size="lg"
         />
         <Button
           v-if="editing && isAdmin()"
           :label="__('Reset to default')"
           :iconLeft="LucideUndo2"
           @click="resetToDefault"
+          variant="outline"
+          theme="red"
+          size="lg"
         />
-        <Button v-if="editing" :label="__('Cancel')" @click="cancel" />
+        <Button
+          v-if="editing"
+          :label="__('Cancel')"
+          @click="cancel"
+          variant="solid"
+          theme="red"
+          size="lg"
+        />
         <Button
           v-if="editing"
           variant="solid"
@@ -37,6 +56,8 @@
           :disabled="!dirty"
           :loading="saveDashboard.loading"
           @click="save"
+          theme="green"
+          size="lg"
         />
       </template>
     </LayoutHeader>
@@ -114,13 +135,13 @@
       </Link>
     </div>
 
-    <div class="w-full overflow-y-scroll">
-      <DashboardGrid
-        class="pt-1"
-        v-if="!dashboardItems.loading && dashboardItems.data"
-        v-model="dashboardItems.data"
-        :editing="editing"
-      />
+    <div class="w-full overflow-y-scroll bg-main-bg">
+        <DashboardGrid
+          class="pt-1"
+          v-if="!dashboardItems.loading && dashboardItems.data"
+          v-model="dashboardItems.data"
+          :editing="editing"
+        />
     </div>
   </div>
   <AddChartModal

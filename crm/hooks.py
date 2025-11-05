@@ -1,12 +1,13 @@
-app_name = "crm"
-app_title = "Frappe CRM"
-app_publisher = "Frappe Technologies Pvt. Ltd."
-app_description = "Kick-ass Open Source CRM"
-app_email = "shariq@frappe.io"
-app_license = "AGPLv3"
-app_icon_url = "/assets/crm/images/logo.svg"
-app_icon_title = "CRM"
+app_name = "revenyu"
+app_title = "Revenyu"
+app_publisher = "Projecx.io Team"
+app_description = "Revenyu is an all-in-one real estate and CRM system designed to streamline property management, client relationships, and sales processes for real estate professionals."
+app_email = "support@projecx.io"
+app_license = "mit"
+app_icon_url = "/assets/crm/images/logo.png"
+app_icon_title = "Revenyu CRM"
 app_icon_route = "/crm"
+
 
 # Apps
 # ------------------
@@ -15,7 +16,7 @@ app_icon_route = "/crm"
 add_to_apps_screen = [
 	{
 		"name": "crm",
-		"logo": "/assets/crm/images/logo.svg",
+		"logo": "/assets/crm/images/revenyu-crm.svg",
 		"title": "CRM",
 		"route": "/crm",
 		"has_permission": "crm.api.check_app_permission",
@@ -24,15 +25,19 @@ add_to_apps_screen = [
 
 # Includes in <head>
 # ------------------
-
+# website settings
+app_logo_url = "/assets/crm/images/logo-black.png"
+website_context = {
+	"favicon": "/assets/crm/images/logo.png",
+	"splash_image": "/assets/crm/images/logo.png",
+}
 # include js, css files in header of desk.html
-# app_include_css = "/assets/crm/css/crm.css"
+app_include_css = "crm.bundle.css"
 # app_include_js = "/assets/crm/js/crm.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/crm/css/crm.css"
+web_include_css = "crm-web.bundle.css"
 # web_include_js = "/assets/crm/js/crm.js"
-
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "crm/public/scss/website"
 
@@ -193,9 +198,7 @@ doc_events = {
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# "frappe.desk.doctype.event.event.get_events": "crm.event.get_events"
-# }
+override_whitelisted_methods = {"frappe.apps.get_apps": "crm.overrides.whitelists.apps.get_apps"}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,

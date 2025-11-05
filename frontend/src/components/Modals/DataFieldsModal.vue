@@ -23,11 +23,12 @@
           <div class="flex flex-row-reverse gap-2">
             <Button
               :loading="loading"
+              theme="green"
               :label="__('Save')"
               variant="solid"
               @click="saveChanges"
             />
-            <Button :label="__('Reset')" @click="reload" />
+            <Button :label="__('Reset')" @click="reload" theme="red" />
           </div>
         </div>
         <div v-if="tabs?.data">

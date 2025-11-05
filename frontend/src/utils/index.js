@@ -714,3 +714,27 @@ export function orderSensitiveEqual(a, b) {
   for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false
   return true
 }
+
+
+export function extractCoordinates(geoJsonString) {
+	// if there is no value return abu dhabi coordinates by default
+	if (!geoJsonString || geoJsonString?.trim() === '') return { lng: 55.75, lat: 24.86 }
+	try {
+		const geoJson = JSON.parse(geoJsonString)
+
+		// Check if it's a valid GeoJSON Point
+		if (
+			geoJson?.type === 'FeatureCollection' &&
+			geoJson.features?.[0]?.geometry?.type === 'Point' &&
+			Array.isArray(geoJson.features[0].geometry.coordinates)
+		) {
+			const [lng, lat] = geoJson.features[0].geometry.coordinates
+			return { lng, lat }
+		}
+
+		return { lng: 55.75, lat: 24.86 }
+	} catch (error) {
+		console.error('Failed to parse GeoJSON:', error)
+		return { lng: 55.75, lat: 24.86 }
+	}
+}

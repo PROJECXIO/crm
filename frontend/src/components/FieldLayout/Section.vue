@@ -1,11 +1,11 @@
 <template>
   <div
     v-if="!section.hidden"
-    class="section"
+    class="section bg-white "
     :class="[
       section.hideBorder
         ? 'pt-4'
-        : 'border-t border-outline-gray-modals mt-5 pt-5',
+        : 'mt-5 pt-5 rounded-md p-6',
     ]"
   >
     <Section

@@ -176,9 +176,9 @@
                       </div>
                     </template>
                     <template #item-label="{ option }">
-                      <div class="flex flex-col gap-1 text-ink-gray-9">
+                      <div class="flex flex-col gap-1 text-ink-gray-9 group-hover:text-white group-hover:text-base">
                         <div>{{ option.label }}</div>
-                        <div class="text-ink-gray-4 text-sm">
+                        <div class="text-ink-gray-4 text-sm group-hover:text-white group-hover:text-base">
                           {{ `${option.fieldname} - ${option.fieldtype}` }}
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="show" :options="{ size: 'xl' }">
+  <Dialog v-model="show" :options="{ size: '2xl' }">
     <template #body-header>
       <div class="mb-6 flex items-center justify-between">
         <div class="flex items-center space-x-2">
@@ -45,7 +45,7 @@
           <div class="flex gap-1 w-9/12">
             <Dropdown class="" :options="colors">
               <div
-                class="flex items-center justify-center size-7 shrink-0 border border-outline-gray-2 bg-surface-white hover:border-outline-gray-3 hover:shadow-sm rounded cursor-pointer"
+                class="flex items-center justify-center size-10 shrink-0 border border-outline-gray-2 bg-surface-white hover:border-outline-gray-3 hover:shadow-sm rounded cursor-pointer"
               >
                 <div
                   class="size-2.5 rounded-full cursor-pointer"
@@ -58,7 +58,7 @@
             <TextInput
               class="w-full"
               ref="title"
-              size="sm"
+              size="lg"
               v-model="_event.title"
               :placeholder="__('Call with John Doe')"
               variant="outline"
@@ -70,7 +70,12 @@
           <div class="text-base text-ink-gray-7 w-3/12">
             {{ __('All day') }}
           </div>
-          <Switch v-model="_event.isFullDay" />
+          <CustomSwitch
+					class="flex-1 justify-start mt-2"
+					:current-value="_event.isFullDay"
+					@change="(v) => (_event.isFullDay = v)"
+				/>
+          <!-- <Switch v-model="_event.isFullDay" /> -->
         </div>
         <div class="border-t border-outline-gray-1" />
         <div class="flex items-center">
@@ -79,13 +84,14 @@
           </div>
           <div class="flex gap-2 w-9/12">
             <DatePicker
-              :class="[_event.isFullDay ? 'w-full' : 'w-[158px]']"
+              :class="[_event.isFullDay ? 'w-full' : 'w-[168px]']"
               variant="outline"
               :value="_event.fromDate"
               :format="'MMM D, YYYY'"
               :placeholder="__('May 1, 2025')"
               :clearable="false"
               @update:modelValue="(date) => updateDate(date, true)"
+              size="lg"
             >
               <template #suffix="{ togglePopover }">
                 <FeatherIcon
@@ -97,7 +103,8 @@
             </DatePicker>
             <TimePicker
               v-if="!_event.isFullDay"
-              class="max-w-[112px]"
+              size="lg"
+              class="max-w-[140px]"
               variant="outline"
               :modelValue="_event.fromTime"
               :placeholder="__('Start Time')"
@@ -105,7 +112,8 @@
             />
             <TimePicker
               v-if="!_event.isFullDay"
-              class="max-w-[112px]"
+              size="lg"
+              class="max-w-[140px]"
               variant="outline"
               :modelValue="_event.toTime"
               :options="toOptions"
@@ -121,6 +129,7 @@
           </div>
           <div class="w-9/12">
             <Attendee
+              inputClass="!h-10"
               v-model="peoples"
               :validate="validateEmail"
               :error-message="
@@ -135,7 +144,7 @@
           </div>
           <div class="w-9/12">
             <TextEditor
-              editor-class="!prose-sm overflow-auto min-h-[80px] max-h-80 py-1.5 px-2 rounded border border-outline-gray-2 placeholder-ink-gray-4 hover:border-outline-gray-3 hover:border-outline-gray-modals hover:shadow-sm focus:bg-surface-white focus:border-outline-gray-4 focus:shadow-sm focus:ring-0 focus-visible:ring-2 focus-visible:ring-outline-gray-3 text-ink-gray-8 transition-colors"
+              editor-class="!prose-sm overflow-auto min-h-[80px] max-h-80 py-1.5 px-2 rounded border border-outline-gray-2 placeholder-ink-gray-4 hover:border-outline-gray-3 hover:border-outline-gray-modals hover:shadow-sm focus:bg-surface-white focus:ring-0  text-ink-gray-8 transition-colors"
               :bubbleMenu="true"
               :content="_event.description"
               @change="(val) => (_event.description = val)"
@@ -151,6 +160,7 @@
         <Button :label="__('Cancel')" @click="show = false" />
         <Button
           variant="solid"
+          theme="green"
           :label="
             mode === 'edit'
               ? __('Update')
@@ -173,14 +183,10 @@
 <script setup>
 import Attendee from '@/components/Calendar/Attendee.vue'
 import {
-  Switch,
   TextEditor,
   ErrorMessage,
   Dialog,
-  DatePicker,
-  TimePicker,
   dayjs,
-  Dropdown,
 } from 'frappe-ui'
 import { globalStore } from '@/stores/global'
 import { validateEmail } from '@/utils'
@@ -193,6 +199,10 @@ import {
 } from '@/composables/event'
 import { CalendarColorMap as colorMap } from 'frappe-ui'
 import { onMounted, ref, computed, h } from 'vue'
+import Dropdown from '@/components/frappe-ui/Dropdown.vue'
+import CustomSwitch from '@/components/Controls/CustomSwitch.vue'
+import TimePicker from '@/components/frappe-ui/TimePicker.vue'
+import DatePicker from '@/components/frappe-ui/DatePicker.vue'
 
 const props = defineProps({
   event: {

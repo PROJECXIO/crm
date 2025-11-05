@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../../../../tmp/tmp-140308-cg6AR5IgC3kP/crm/crm/public/css/crm.bundle.css"],
+  "sourcesContent": ["\n@import \"/assets/crm/fonts/montserrat.css\";\n\n:root {\n  --font-family: 'Montserrat', sans-serif !important;\n  --font-stack: var(--font-family) !important;\n}\n\n/* Global styles */\nbody,\nhtml,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nspan,\ndiv,\ninput,\nbutton,\nselect,\ntextarea,\n.form-control {\n  font-family: var(--font-family) !important;\n}\n\n/* Login page specific styles */\n#page-login,\n#page-login *,\n.page-card,\n.page-card *,\n.for-login,\n.for-login *,\n.for-forgot,\n.for-signup,\n.for-email-login,\n.web-footer,\n.web-footer * {\n  font-family: var(--font-family) !important;\n}\n\n/* Override any other font families */\n[class*=\"login\"],\n[class*=\"signup\"],\n.btn,\n.control-label,\n.page-card-head,\n.page-card-head *,\n.hero-content,\n.hero-content * {\n  font-family: var(--font-family) !important;\n}"],
+  "mappings": ";;;AAGA;AACE;AACA;AAAA;AAIF;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAgBE;AAAA;AAIF;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAWE;AAAA;AAIF;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAQE;AAAA;",
+  "names": []
+}

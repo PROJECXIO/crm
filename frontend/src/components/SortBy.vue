@@ -5,9 +5,11 @@
     value=""
     :placeholder="__('First Name')"
     @change="(e) => setSort(e)"
+    variant="outline"
+    class="!w-fit"
   >
     <template #target="{ togglePopover }">
-      <Button :label="__('Sort')" @click="togglePopover()">
+      <Button :label="__('Sort')" @click="togglePopover()" variant="solid" theme="green" class="font-semibold">
         <template v-if="hideLabel">
           <SortIcon class="h-4" />
         </template>
@@ -25,6 +27,8 @@
         :icon="hideLabel && SortIcon"
         :iconLeft="!hideLabel && SortIcon"
         @click="togglePopover"
+        theme="green"
+        variant="solid"
       >
         <template v-if="sortValues?.size" #suffix>
           <div
@@ -38,6 +42,8 @@
         <Button
           v-if="sortValues.size"
           class="rounded-r-none border-r"
+          theme="green"
+          variant="solid"
           :icon="
             Array.from(sortValues)[0].direction == 'asc'
               ? AscendingIcon
@@ -60,6 +66,8 @@
           "
           :class="sortValues.size ? 'rounded-l-none' : ''"
           @click.stop="togglePopover"
+          theme="green"
+          variant="solid"
         />
       </div>
     </template>
@@ -85,6 +93,8 @@
                 <Button
                   size="md"
                   class="rounded-r-none border-r"
+                  theme="green"
+                  variant="solid"
                   :icon="
                     sort.direction == 'asc' ? AscendingIcon : DesendingIcon
                   "
@@ -101,6 +111,7 @@
                   :options="sortOptions.data"
                   @change="(e) => updateSort(e, i)"
                   :placeholder="__('First Name')"
+                  variant="outline"
                 >
                   <template
                     #target="{
@@ -120,7 +131,7 @@
                   </template>
                 </Autocomplete>
               </div>
-              <Button variant="ghost" icon="x" @click="removeSort(i)" />
+              <Button variant="ghost" theme="red" icon="x" @click="removeSort(i)" />
             </div>
           </div>
           <div
@@ -135,12 +146,14 @@
               value=""
               :placeholder="__('First Name')"
               @change="(e) => setSort(e)"
+              variant="outline"
             >
               <template #target="{ togglePopover }">
                 <Button
-                  class="!text-ink-gray-5"
+                  class="!text-subheading"
                   :label="__('Add Sort')"
                   variant="ghost"
+                  theme="green"
                   iconLeft="plus"
                   @click="togglePopover()"
                 />
@@ -148,8 +161,9 @@
             </Autocomplete>
             <Button
               v-if="sortValues?.size"
-              class="!text-ink-gray-5"
+              class="!text-subheading w-44"
               variant="ghost"
+              theme="red"
               :label="__('Clear Sort')"
               @click="clearSort(close)"
             />

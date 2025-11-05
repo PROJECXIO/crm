@@ -7,5 +7,6 @@ dev-dist
 tags
 node_modules
 crm/public/frontend
+crm/public/dist
 crm/www/crm.html
 build

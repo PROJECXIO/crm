@@ -144,7 +144,10 @@ import {
   teamShiftRequests,
 } from '@/data/attendance'
 import CheckInPanel from '@/components/HR/CheckInPanel.vue'
+import { useRouter } from 'vue-router'
 //
+
+const router = useRouter()
 
 const { getUser } = usersStore()
 const activeTab = ref('My Requests')
@@ -157,7 +160,7 @@ const myRequests = computed(() =>
     myAttendanceRequests,
   ),
 )
-console.log({ myRequests })
+
 const teamRequests = computed(() =>
   updateRequestDetails(
     teamLeaves,
@@ -220,7 +223,7 @@ const quickLinks = computed(() => [
   {
     label: __('View Salary Slips'),
     icon: SalarySlipIcon,
-    onClick: () => emit('downloadSalarySlipPdf'),
+    onClick: () => router.replace({hash: 'salary'}),
   },
 ])
 

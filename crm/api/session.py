@@ -40,6 +40,21 @@ def get_users():
 			user.session_user = True
 
 		user.is_telephony_agent = frappe.db.exists("CRM Telephony Agent", {"user": user.name})
+		user.employee = frappe.db.get_value(
+			"Employee",
+			{"user_id": user.name, "status": "Active"},
+			[
+				"name",
+				"first_name",
+				"employee_name",
+				"designation",
+				"department",
+				"company",
+				"reports_to",
+				"user_id",
+			],
+			as_dict=True,
+		)
 
 	crm_users = []
 

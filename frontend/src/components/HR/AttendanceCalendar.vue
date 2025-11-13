@@ -62,9 +62,12 @@
 </template>
 
 <script setup>
-import { computed, inject, ref, watch } from "vue"
+import { computed, ref, watch } from "vue"
 import { createResource, dayjs } from "frappe-ui"
-import {userEmployeeResource} from "@/stores/user"
+import { userEmployeeResource } from "@/stores/user"
+import { usersStore } from '@/stores/users'
+
+const { getUser } = usersStore()
 
 const firstOfMonth = ref(dayjs().date(1).startOf("D"))
 
@@ -125,7 +128,7 @@ const calendarEvents = createResource({
 	cache: "hrms:attendance_calendar_events",
 	makeParams() {
 		return {
-			employee: userEmployeeResource.data.name,
+			employee: getUser().employee?.name || userEmployeeResource.data?.name,
 			from_date: firstOfMonth.value.format("YYYY-MM-DD"),
 			to_date: firstOfMonth.value.endOf("M").format("YYYY-MM-DD"),
 		}

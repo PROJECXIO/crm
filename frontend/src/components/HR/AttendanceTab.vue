@@ -234,6 +234,9 @@ import {
 	myShiftRequests,
 } from "@/data/attendance"
 import AttendanceCalendar from '@/components/HR/AttendanceCalendar.vue'
+import { usersStore } from '@/stores/users'
+
+const { getUser } = usersStore()
 
 const shifts = createResource({
 	url: "hrms.api.get_shifts",
@@ -241,7 +244,7 @@ const shifts = createResource({
 	cache: "hrms:shifts",
 	makeParams() {
 		return {
-			employee: userEmployeeResource.data.name,
+			employee: getUser().employee?.name || userEmployeeResource.data?.name,
 		}
 	},
 	transform: (data) => {

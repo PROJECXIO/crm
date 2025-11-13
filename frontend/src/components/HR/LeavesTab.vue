@@ -62,7 +62,7 @@
 					v-else-if="leaveBalance?.data && Object.entries(leaveBalance.data).length === 0"
 				>
 					<p class="text-[#666] font-medium italic text-center text-lg">
-						{{ __(`There are no balance for ${isAdmin() ? getUser().name : userEmployeeResource.data.full_name}`) }}
+						{{ __(`There are no balance for ${isAdmin() ? getUser().name : getUser().employee?.employee_name || userEmployeeResource.data?.employee_name}`) }}
 					</p>
 					<p class="text-[#666] font-medium italic text-center text-lg">
 						{{ __('Add Leave Allocation to see balance') }}
@@ -230,7 +230,7 @@ const leaveStatusColors = {
 const holidays = createResource({
 	url: "hrms.api.get_holidays_for_employee",
 	params: {
-		employee: userEmployeeResource.data.name,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
 	},
 	auto: true,
 	transform: (data) => {

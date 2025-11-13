@@ -112,7 +112,7 @@ const lastLogType = computed(() => {
 })
 
 const nextAction = computed(() => {
-	if(dayjs(lastLog.value.time).isToday()){
+	if(dayjs(lastLog.value?.time).isToday()){
 		return lastLog?.value?.log_type === 'IN'
 			? { action: 'OUT', label: __('Check Out') }
 			: { action: 'IN', label: __('Check In') }

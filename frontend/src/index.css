@@ -1,5 +1,5 @@
 @import "frappe-ui/src/style.css";
-@import "../../crm/public/fonts/montserrat.css";
+@import "../public/fonts/montserrat.css";
 
 :root {
   --font-family: 'Montserrat', sans-serif !important;

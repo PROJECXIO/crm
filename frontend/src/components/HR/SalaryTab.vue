@@ -403,7 +403,7 @@ const recentSlips = createListResource({
 const employeeSalarySlip = computed(() => {
   if (!recentSlips.data?.length) return {}
   let lastSlip = recentSlips.data?.filter(
-    (el) => el.employee == userEmployeeResource.data.name,
+    (el) => el.employee == getUser().employee?.name || userEmployeeResource.data?.name,
   )
   if (lastSlip.length > 0) return lastSlip[0]
   return recentSlips.data?.[0]

@@ -14,7 +14,11 @@
           class="relative z-10 flex h-full w-[260px] flex-col justify-between border-r bg-sidebar-bg transition-all duration-300 ease-in-out pt-8"
         >
           <div class="flex-1 overflow-y-auto">
-            <div class="mb-3 flex flex-col">
+            <div class="px-2">
+              <LogoFull class="w-44 h-11 mx-2" />
+            </div>
+            <div class="h-px w-full bg-gray-400 mt-2" />
+            <div class="mb-3 flex flex-col mt-3">
               <SidebarLink
                 id="notifications-btn"
                 :label="__('Notifications')"
@@ -87,9 +91,9 @@ import {
   DialogOverlay,
 } from '@headlessui/vue'
 import Section from '@/components/Section.vue'
+import LogoFull from '@/components/Icons/RevenyuFull.vue'
 import Email2Icon from '@/components/Icons/Email2Icon.vue'
 import PinIcon from '@/components/Icons/PinIcon.vue'
-import UserDropdown from '@/components/UserDropdown.vue'
 import LeadsIcon from '@/components/Icons/LeadsIcon.vue'
 import DealsIcon from '@/components/Icons/DealsIcon.vue'
 import ContactsIcon from '@/components/Icons/ContactsIcon.vue'
@@ -101,14 +105,27 @@ import NotificationsIcon from '@/components/Icons/NotificationsIcon.vue'
 import SidebarLink from '@/components/SidebarLink.vue'
 import { viewsStore } from '@/stores/views'
 import { unreadNotificationsCount } from '@/stores/notifications'
-import { createResource } from 'frappe-ui'
-import { TrialBanner } from 'frappe-ui/frappe'
 import { computed, h, provide } from 'vue'
 import { mobileSidebarOpened as sidebarOpened } from '@/composables/settings'
+import HRIcon from '@/components/Icons/Custom/HRIcon.vue'
+import { usersStore } from '@/stores/users'
 
 const { getPinnedViews, getPublicViews } = viewsStore()
+const { getUser } = usersStore()
 
 const links = [
+  {
+    label: 'Dashboard',
+    icon: LucideLayoutDashboard,
+    to: 'Dashboard',
+  },
+  {
+    label: 'HR Profile',
+    icon: HRIcon,
+    to: 'HR',
+    condition: () =>
+      !!getUser().emploee?.name || !!userEmployeeResource?.data?.name,
+  },
   {
     label: 'Leads',
     icon: LeadsIcon,

@@ -2,15 +2,14 @@
   <div
     v-if="visible"
     ref="target"
-    class="absolute z-20 h-screen bg-surface-white transition-all duration-300 ease-in-out"
+    class="absolute z-20 right-20 top-20 rounded-md overflow-hidden bg-surface-white transition-all duration-300 ease-in-out"
     :style="{
       'box-shadow': '8px 0px 8px rgba(0, 0, 0, 0.1)',
       'max-width': '350px',
       'min-width': '350px',
-      left: 'calc(100% + 1px)',
     }"
   >
-    <div class="flex h-screen flex-col text-ink-gray-9">
+    <div class="flex h-[calc(100vh-200px)] flex-col text-ink-gray-9">
       <div
         class="z-20 flex items-center justify-between border-b bg-surface-white px-5 py-2.5"
       >

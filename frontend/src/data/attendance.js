@@ -2,7 +2,7 @@ import { createResource, dayjs } from "frappe-ui"
 import { userEmployeeResource } from "@/stores/user"
 import { usersStore } from '@/stores/users'
 
-const { isAdmin } = usersStore()
+const { isAdmin, getUser } = usersStore()
 
 
 export const getDates = (shift) => {
@@ -50,7 +50,7 @@ const transformShiftRequests = (data) =>
 export const myAttendanceRequests = createResource({
 	url: "hrms.api.get_attendance_requests",
 	params: {
-		employee: userEmployeeResource.data.name,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
 		limit: 10,
 	},
 	auto: true,
@@ -70,7 +70,7 @@ const transformAttendanceRequests = (data) => {
 export const myShiftRequests = createResource({
 	url: "hrms.api.get_shift_requests",
 	params: {
-		employee: userEmployeeResource.data.name,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
 		limit: 10,
 	},
 	auto: true,
@@ -83,8 +83,8 @@ export const myShiftRequests = createResource({
 export const teamShiftRequests = createResource({
 	url: "hrms.api.get_shift_requests",
 	params: {
-		employee: userEmployeeResource.data.name,
-		approver_id: userEmployeeResource.data.user_id,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
+		approver_id: getUser().employee?.user_id || userEmployeeResource.data?.user_id,
 		for_approval: isAdmin() ? 0 : 1,
 		limit: 10,
 	},
@@ -97,7 +97,7 @@ export const teamShiftRequests = createResource({
 export const teamAttendanceRequests = createResource({
 	url: "hrms.api.get_attendance_requests",
 	params: {
-		employee: userEmployeeResource.data.name,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
 		for_approval: isAdmin() ? 0 : 1,
 		limit: 10,
 	},

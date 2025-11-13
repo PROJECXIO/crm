@@ -3,12 +3,12 @@ import { reactive } from "vue"
 import { userEmployeeResource } from "@/stores/user"
 import { usersStore } from '@/stores/users'
 
-const { isAdmin } = usersStore()
+const { isAdmin, getUser } = usersStore()
 
 export const expenseClaimSummary = createResource({
 	url: "hrms.api.get_expense_claim_summary",
 	params: {
-		employee: userEmployeeResource.data.name,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
 	},
 	auto: true,
 	cache: "hrms:expense_claim_summary",
@@ -24,7 +24,7 @@ const transformClaimData = (data) => {
 export const myClaims = createResource({
 	url: "hrms.api.get_expense_claims",
 	params: {
-		employee: userEmployeeResource.data.name,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
 		limit: 10,
 	},
 	auto: true,
@@ -40,8 +40,8 @@ export const myClaims = createResource({
 export const teamClaims = createResource({
 	url: "hrms.api.get_expense_claims",
 	params: {
-		employee: userEmployeeResource.data.name,
-		approver_id: userEmployeeResource.data.user_id,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
+		approver_id: getUser().employee?.user_id || userEmployeeResource.data?.user_id,
 		for_approval: isAdmin() ? 0 : 1,
 		limit: 10,
 	},

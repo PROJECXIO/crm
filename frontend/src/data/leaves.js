@@ -2,8 +2,7 @@ import { createResource, dayjs } from "frappe-ui"
 import { userEmployeeResource } from "@/stores/user"
 import { usersStore } from '@/stores/users'
 
-const { isAdmin } = usersStore()
-
+const { isAdmin, getUser } = usersStore()
 
 const transformLeaveData = (data) => {
 	return data.map((leave) => {
@@ -25,7 +24,7 @@ export const getLeaveDates = (leave) => {
 export const myLeaves = createResource({
 	url: "hrms.api.get_leave_applications",
 	params: {
-		employee: userEmployeeResource.data.name,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
 		limit: 10,
 	},
 	auto: true,
@@ -41,8 +40,8 @@ export const myLeaves = createResource({
 export const teamLeaves = createResource({
 	url: "hrms.api.get_leave_applications",
 	params: {
-		employee: userEmployeeResource.data.name,
-		approver_id: userEmployeeResource.data.user_id,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
+		approver_id: getUser().employee?.user_id || userEmployeeResource.data?.user_id,
 		for_approval: isAdmin() ? 0 : 1,
 		limit: 10,
 	},
@@ -56,7 +55,7 @@ export const teamLeaves = createResource({
 export const leaveBalance = createResource({
 	url: "hrms.api.get_leave_balance_map",
 	params: {
-		employee: userEmployeeResource.data.name,
+		employee: getUser().employee?.name || userEmployeeResource.data?.name,
 	},
 	auto: true,
 	cache: "hrms:leave_balance",

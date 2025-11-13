@@ -1,12 +1,13 @@
 <template>
-  <div class="flex pr-3">
-    <div class="z-20 pl-2 flex items-center justify-center bg-main-bg">
+  <div class="flex">
+    <div class="z-20 pl-2 flex items-center justify-center bg-sidebar-bg">
       <Button
-        class="size-7"
-        variant="ghost"
+        size="md"
+        variant="solid"
+        theme="green"
         @click="sidebarOpened = !sidebarOpened"
       >
-        <MenuIcon class="h-4 text-ink-gray-9" />
+        <MenuIcon class="h-4 text-white" />
       </Button>
     </div>
     <div id="app-header" class="flex-1" />

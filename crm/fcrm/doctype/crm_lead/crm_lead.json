@@ -17,6 +17,8 @@
   "industry",
   "job_title",
   "source",
+  "service",
+  "message",
   "lead_owner",
   "person_tab",
   "salutation",
@@ -325,14 +327,24 @@
    "label": "Net Total",
    "options": "currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "service",
+   "fieldtype": "Data",
+   "label": "Service"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Small Text",
+   "label": "Message"
   }
  ],
  "grid_page_length": 50,
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-14 19:51:06.184569",
- "modified_by": "Administrator",
+ "modified": "2025-11-16 10:29:32.331794",
+ "modified_by": "mhemd@gmail.com",
  "module": "FCRM",
  "name": "CRM Lead",
  "naming_rule": "By \"Naming Series\" field",

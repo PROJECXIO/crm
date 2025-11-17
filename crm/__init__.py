@@ -16,7 +16,7 @@ from frappe.api.v2 import url_rules as v2_rules
 from frappe import api
 
 
-from retail.api.routes import url_rules
+from crm.api.routes import url_rules
 
 def handle(request: Request):
 	"""

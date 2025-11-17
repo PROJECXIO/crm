@@ -92,7 +92,6 @@ declare module 'vue' {
     ContactsListView: typeof import('./src/components/ListViews/ContactsListView.vue')['default']
     ConvertIcon: typeof import('./src/components/Icons/ConvertIcon.vue')['default']
     ConvertToDealModal: typeof import('./src/components/Modals/ConvertToDealModal.vue')['default']
-    copy: typeof import('./src/components/Icons/PhoneIcon copy.vue')['default']
     CountUpTimer: typeof import('./src/components/CountUpTimer.vue')['default']
     CreateDocumentButton: typeof import('./src/components/CreateDocumentButton.vue')['default']
     CreateDocumentModal: typeof import('./src/components/Modals/CreateDocumentModal.vue')['default']

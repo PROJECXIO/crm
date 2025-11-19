@@ -25,8 +25,8 @@
             {{ __('Title') }}
           </div>
           <TextInput
-          size="lg"
-          variant="outline"
+            size="lg"
+            variant="outline"
             ref="title"
             v-model="_task.title"
             :placeholder="__('Call with John Doe')"
@@ -52,7 +52,6 @@
         <div class="flex flex-wrap items-center gap-2">
           <Dropdown :options="taskStatusOptions(updateTaskStatus)">
             <Button :label="_task.status" theme="green">
-              
               <template #prefix>
                 <TaskStatusIcon :status="_task.status" />
               </template>
@@ -105,10 +104,13 @@
       </div>
     </template>
     <template #actions>
-      <div class="flex justify-end">
+      <div class="">
         <Button
+          class="w-full"
+          size="lg"
           :label="editMode ? __('Update') : __('Create')"
           variant="solid"
+          theme="green"
           @click="updateTask"
         />
       </div>

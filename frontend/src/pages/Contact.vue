@@ -34,7 +34,7 @@
   >
     <!-- details  -->
     <div
-      class="flex py-5 p-5 md:px-6 rounded-xl bg-sidebar-bg mx-1 md:mx-2 lg:mx-8"
+      class="flex py-5 p-5 md:px-6 rounded-xl -bg mx-1 md:mx-2 lg:mx-8"
       style="box-shadow: -9px 9px 40px 0px #00000014"
     >
       <!-- owner  -->

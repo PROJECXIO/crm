@@ -1,0 +1,106 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-18 17:11:55.592882",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "background_colors_section",
+  "sidebar_bg",
+  "navbar_bg",
+  "column_break_qgrw",
+  "main_bg",
+  "header_bg",
+  "text_colors_section",
+  "sidebar_label_inactive_color",
+  "sidebar_label_bg_color_inactive",
+  "column_break_tnlu",
+  "sidebar_label_active_color",
+  "sidebar_label_bg_color_active"
+ ],
+ "fields": [
+  {
+   "fieldname": "background_colors_section",
+   "fieldtype": "Section Break",
+   "label": "Background Colors"
+  },
+  {
+   "fieldname": "sidebar_bg",
+   "fieldtype": "Color",
+   "label": "Sidebar Bg"
+  },
+  {
+   "fieldname": "navbar_bg",
+   "fieldtype": "Color",
+   "label": "Navbar Bg"
+  },
+  {
+   "fieldname": "column_break_qgrw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "main_bg",
+   "fieldtype": "Color",
+   "label": "Main Bg"
+  },
+  {
+   "fieldname": "header_bg",
+   "fieldtype": "Color",
+   "label": "Header Bg"
+  },
+  {
+   "fieldname": "text_colors_section",
+   "fieldtype": "Section Break",
+   "label": "Text Colors"
+  },
+  {
+   "fieldname": "sidebar_label_inactive_color",
+   "fieldtype": "Color",
+   "label": "Sidebar Label Color (inactive)"
+  },
+  {
+   "fieldname": "column_break_tnlu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sidebar_label_active_color",
+   "fieldtype": "Color",
+   "label": "Sidebar Label Color (active)"
+  },
+  {
+   "fieldname": "sidebar_label_bg_color_inactive",
+   "fieldtype": "Color",
+   "label": "Sidebar Label Bg Color (inactive)"
+  },
+  {
+   "fieldname": "sidebar_label_bg_color_active",
+   "fieldtype": "Color",
+   "label": "Sidebar Label Bg Color (active)"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-11-18 17:55:36.334557",
+ "modified_by": "Administrator",
+ "module": "FCRM",
+ "name": "Theme Customization",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

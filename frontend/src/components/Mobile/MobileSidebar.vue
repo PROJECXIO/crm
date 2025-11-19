@@ -11,7 +11,7 @@
         leave-to="-translate-x-full"
       >
         <div
-          class="relative z-10 flex h-full w-[260px] flex-col justify-between border-r bg-sidebar-bg transition-all duration-300 ease-in-out pt-8"
+          class="relative z-10 flex h-full w-[260px] flex-col justify-between border-r -bg transition-all duration-300 ease-in-out pt-8"
         >
           <div class="flex-1 overflow-y-auto">
             <div class="px-2">

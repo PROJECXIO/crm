@@ -7,7 +7,7 @@
   >
     <template #body>
       <div class="flex h-[calc(100vh_-_8rem)]">
-        <div class="flex flex-col p-1 w-52 shrink-0 bg-sidebar-bg">
+        <div class="flex flex-col p-1 w-52 shrink-0 -bg">
           <h1 class="px-3 pt-3 pb-2 text-lg font-semibold text-ink-gray-8">
             {{ __('Settings') }}
           </h1>
@@ -15,10 +15,13 @@
             <template v-for="tab in tabs" :key="tab.label">
               <div
                 v-if="!tab.hideLabel"
-                class="py-[7px] px-2 my-1 flex cursor-pointer gap-1.5 text-base  transition-all duration-300 ease-in-out"
+                class="py-[7px] px-2 my-1 flex cursor-pointer gap-1.5 text-base transition-all duration-300 ease-in-out"
                 :class="
-                    activeTab?.label == tab.label ? 'text-white': 'text-subheading'"
-                >
+                  activeTab?.label == tab.label
+                    ? 'text-white'
+                    : 'text-subheading'
+                "
+              >
                 <span>{{ __(tab.label) }}</span>
               </div>
               <nav class="space-y-1 px-1">
@@ -38,7 +41,7 @@
             </template>
           </div>
         </div>
-        <div class="flex flex-col flex-1 overflow-y-auto bg-[#F1F2F3]">
+        <div class="flex flex-col flex-1 overflow-y-auto">
           <component :is="activeTab.component" v-if="activeTab" />
         </div>
       </div>

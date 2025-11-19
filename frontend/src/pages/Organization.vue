@@ -24,7 +24,7 @@
   </LayoutHeader>
   <div v-if="organization.doc" ref="parentRef" class="h-full">
     <div
-      class="mx-1 md:mx-3 lg:mx-8 flex flex-col items-start px-4 py-3 md:px-6 md:py-5 lg:items-center lg:flex-row rounded-xl bg-gold dark:bg-[#313131] gap-4 mt-5"
+      class="mx-1 md:mx-3 lg:mx-8 flex flex-col items-start px-4 py-3 md:px-6 md:py-5 lg:items-center lg:flex-row rounded-xl bg-white dark:bg-[#313131] gap-4 mt-5"
       style="box-shadow: -9px 9px 40px 0px #00000014"
     >
       <div class="flex items-center justify-between">
@@ -82,16 +82,20 @@
                   <div class="truncate text-2xl font-medium text-subheading">
                     <span>{{ organization.doc.name }}</span>
                   </div>
-                  <div class="truncate text-base font-medium text-[#666] flex items-center gap-1">
+                  <div
+                    class="truncate text-base font-medium text-[#666] flex items-center gap-1"
+                  >
                     <FeatherIcon name="users" class="size-4" />
 
                     <span>{{ organization.doc.no_of_employees }}</span>
                   </div>
-                  <div v-if="organization.doc.address" class="truncate text-base font-medium text-[#666] flex items-center gap-1">
+                  <div
+                    v-if="organization.doc.address"
+                    class="truncate text-base font-medium text-[#666] flex items-center gap-1"
+                  >
                     <FeatherIcon name="map-pin" class="size-4" />
                     <span>{{ organization.doc.address }}</span>
                   </div>
-                  
                 </div>
               </div>
             </div>
@@ -181,7 +185,7 @@ import {
 } from 'frappe-ui'
 import { h, computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import Tabs from "@/components/frappe-ui/Tabs.vue"
+import Tabs from '@/components/frappe-ui/Tabs.vue'
 const props = defineProps({
   docId: {
     type: String,

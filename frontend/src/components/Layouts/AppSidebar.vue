@@ -1,7 +1,7 @@
 <template>
   <div
     class="relative flex h-full flex-col justify-between gap-8 pt-6 px-2 transition-all duration-300 ease-in-out"
-    :class="isSidebarCollapsed ? 'w-20 !px-2' : 'w-[280px]'"
+    :class="[isSidebarCollapsed ? 'w-20 !px-2' : 'w-[280px]']"
   >
     <div class="flex items-center justify-between">
       <div class="px-2">
@@ -10,7 +10,8 @@
       </div>
       <div
         :class="[
-          'cursor-pointer border-[#E4E6EC] border rounded-sm size-8 bg-white flex items-center justify-center -me-6',
+          'cursor-pointer border-[#E4E6EC] border rounded-sm size-8 flex items-center justify-center -me-6',
+          ,
         ]"
         @click="isSidebarCollapsed = !isSidebarCollapsed"
       >
@@ -84,14 +85,12 @@ import TaskIcon from '@/components/Icons/TaskIcon.vue'
 import CalendarIcon from '@/components/Icons/CalendarIcon.vue'
 import PhoneIcon from '@/components/Icons/PhoneIcon.vue'
 import SidebarLink from '@/components/SidebarLink.vue'
-import Notifications from '@/components/Notifications.vue'
 import Settings from '@/components/Settings/Settings.vue'
 import { usersStore } from '@/stores/users'
 import { FeatherIcon } from 'frappe-ui'
 import { useStorage } from '@vueuse/core'
 import { computed, onMounted } from 'vue'
 import HRIcon from '@/components/Icons/Custom/HRIcon.vue'
-import Email2Icon from '@/components/Icons/Email2Icon.vue'
 import { userEmployeeResource } from '@/stores/user'
 
 const isSidebarCollapsed = useStorage('isSidebarCollapsed', false)
@@ -107,7 +106,8 @@ const links = [
     label: 'HR Profile',
     icon: HRIcon,
     to: 'HR',
-    condition: () => !!getUser().emploee?.name || !!userEmployeeResource?.data?.name,
+    condition: () =>
+      !!getUser().emploee?.name || !!userEmployeeResource?.data?.name,
   },
   {
     label: 'Leads',

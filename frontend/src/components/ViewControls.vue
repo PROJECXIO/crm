@@ -132,7 +132,7 @@
       <Button icon="x" @click="customizeQuickFilter = false" theme="red" />
     </div>
   </div>
-  <div v-else class="flex items-center justify-between gap-2 px-5 py-4 bg-sidebar-bg ">
+  <div v-else class="flex items-center justify-between gap-2 px-5 py-4">
     <FadedScrollableDiv
       class="flex flex-1 items-center overflow-x-auto -ml-1"
       orientation="horizontal"
@@ -155,7 +155,12 @@
         class="flex items-center gap-2 border-r pr-2"
       >
         <Button :label="__('Cancel')" @click="cancelChanges" theme="red" />
-        <Button :label="__('Save Changes')" @click="saveView" theme="green" variant="solid" />
+        <Button
+          :label="__('Save Changes')"
+          @click="saveView"
+          theme="green"
+          variant="solid"
+        />
       </div>
       <div class="flex items-center gap-2">
         <Button
@@ -223,7 +228,13 @@
           ]"
         >
           <template #default>
-            <Button :tooltip="__('More Options')" icon="more-horizontal" theme="green" variant="solid" size="md" />
+            <Button
+              :tooltip="__('More Options')"
+              icon="more-horizontal"
+              theme="green"
+              variant="solid"
+              size="md"
+            />
           </template>
         </Dropdown>
       </div>

@@ -124,9 +124,9 @@ onBeforeUnmount(() => {
 })
 
 onMounted(() => {
-  $socket.on('crm_notification', () => {
-    notifications.reload()
-  })
+  // $socket.on('crm_notification', () => {
+  //   notifications.reload()
+  // })
 })
 
 function getRoute(notification) {

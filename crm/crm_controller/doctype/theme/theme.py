@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class ThemeCustomization(Document):
+class Theme(Document):
 	pass

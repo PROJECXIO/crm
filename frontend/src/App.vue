@@ -1,7 +1,7 @@
 <template>
   <FrappeUIProvider>
     <Layout class="isolate" v-if="session().isLoggedIn">
-      <router-view :key="$route.fullPath"/>
+      <router-view :key="$route.fullPath" />
     </Layout>
     <Dialogs />
   </FrappeUIProvider>
@@ -11,7 +11,10 @@
 import { Dialogs } from '@/utils/dialogs'
 import { sessionStore as session } from '@/stores/session'
 import { FrappeUIProvider, setConfig } from 'frappe-ui'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, inject } from 'vue'
+
+const styles = inject('$styles')
+console.log({ styles })
 
 const MobileLayout = defineAsyncComponent(
   () => import('./components/Layouts/MobileLayout.vue'),

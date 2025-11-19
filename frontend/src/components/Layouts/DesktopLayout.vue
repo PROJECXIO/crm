@@ -2,13 +2,13 @@
   <div class="flex h-screen w-screen relative">
     <div
       class="h-full border-r dark:!bg-dark dark:border-r-gray-50/30"
-      :style="{ backgroundColor: styles.sidebar_bg || '#fff' }"
+      :style="{ backgroundColor: styles?.sidebar_bg || '#fff' }"
     >
       <AppSidebar />
     </div>
     <div
       class="flex-1 flex flex-col h-full overflow-auto dark:!bg-dark"
-      :style="{ backgroundColor: styles.main_bg || '#fff' }"
+      :style="{ backgroundColor: styles?.main_bg || '#fff' }"
     >
       <AppHeader />
       <slot />

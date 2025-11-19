@@ -23,6 +23,8 @@ import {
   frappeRequest,
   FeatherIcon,
 } from 'frappe-ui'
+// import { styles } from '@/composables/settings'
+import { useDocument } from '@/data/document'
 
 let globalComponents = {
   Button,
@@ -52,6 +54,11 @@ for (let key in globalComponents) {
 }
 
 app.config.globalProperties.$dialog = createDialog
+// CRM Lead
+// CRM-LEAD-2025-00011
+
+const { document } = useDocument('Theme Customization', 'Theme Customization')
+app.provide('$styles', document)
 
 let socket
 if (import.meta.env.DEV) {

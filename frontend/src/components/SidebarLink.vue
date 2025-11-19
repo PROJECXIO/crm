@@ -1,13 +1,16 @@
 <template>
   <button
-    class="flex px-3 h-12 cursor-pointer items-center rounded duration-300 ease-in-out focus:outline-none focus:transition-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-outline-gray-3 hover:bg-bg-hover group"
+    class="flex px-3 h-12 cursor-pointer items-center rounded duration-300 ease-in-out focus:outline-none focus:transition-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-outline-gray-3 group"
     :style="[
       isActive
         ? {
-            color: styles.sidebar_label_inactive_color || '#fff',
-            backgroundColor: styles.sidebar_label_bg_color_active || '#eee',
+            color: styles?.sidebar_label_active_color || '#fff',
+            backgroundColor: styles?.sidebar_label_bg_color_active || '#eee',
           }
-        : { color: styles.sidebar_label_inactive_color || '#eee' },
+        : {
+            color: styles?.sidebar_label_inactive_color || '#eee',
+            backgroundColor: styles?.sidebar_label_bg_color_inactive,
+          },
     ]"
     @click="handleClick"
   >
@@ -73,11 +76,11 @@
             :style="[
               isActive
                 ? {
-                    color: styles.sidebar_label_inactive_color || '#fff',
+                    color: styles?.sidebar_label_active_color || '#fff',
                     backgroundColor:
-                      styles.sidebar_label_bg_color_active || '#eee',
+                      styles?.sidebar_label_bg_color_active || '#eee',
                   }
-                : { color: styles.sidebar_label_inactive_color || '#eee' },
+                : { color: styles?.sidebar_label_inactive_color || '#eee' },
             ]"
           >
             {{ label }}

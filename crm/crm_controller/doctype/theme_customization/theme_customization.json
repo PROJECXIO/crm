@@ -16,7 +16,13 @@
   "sidebar_label_bg_color_inactive",
   "column_break_tnlu",
   "sidebar_label_active_color",
-  "sidebar_label_bg_color_active"
+  "sidebar_label_bg_color_active",
+  "button_colors_section",
+  "primary_solid",
+  "secondary_solid",
+  "column_break_xgdk",
+  "primary_outline",
+  "secondary_outline"
  ],
  "fields": [
   {
@@ -76,15 +82,44 @@
    "fieldname": "sidebar_label_bg_color_active",
    "fieldtype": "Color",
    "label": "Sidebar Label Bg Color (active)"
+  },
+  {
+   "fieldname": "button_colors_section",
+   "fieldtype": "Section Break",
+   "label": "Button Colors"
+  },
+  {
+   "fieldname": "primary_solid",
+   "fieldtype": "Color",
+   "label": "Primary Solid"
+  },
+  {
+   "fieldname": "secondary_solid",
+   "fieldtype": "Color",
+   "label": "Secondary Solid"
+  },
+  {
+   "fieldname": "column_break_xgdk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "primary_outline",
+   "fieldtype": "Color",
+   "label": "Primary Outline "
+  },
+  {
+   "fieldname": "secondary_outline",
+   "fieldtype": "Color",
+   "label": "Secondary Outline"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-11-18 17:55:36.334557",
+ "modified": "2025-11-19 13:26:41.824594",
  "modified_by": "Administrator",
- "module": "FCRM",
+ "module": "CRM Controller",
  "name": "Theme Customization",
  "owner": "Administrator",
  "permissions": [

@@ -97,8 +97,8 @@
     >
       <!-- lead owner -->
       <div
-        class="mx-1 md:mx-3 lg:mx-8 flex flex-col items-start px-4 py-3 md:px-6 md:py-5 lg:items-center lg:flex-row rounded-xl bg-sidebar-bg dark:bg-[#313131] gap-4"
-        :class="isMobileView ? 'mt-0': 'mt-5'"
+        class="mx-1 md:mx-3 lg:mx-8 flex flex-col items-start px-4 py-3 md:px-6 md:py-5 lg:items-center lg:flex-row rounded-xl -bg dark:bg-[#313131] gap-4"
+        :class="isMobileView ? 'mt-0' : 'mt-5'"
         style="box-shadow: -9px 9px 40px 0px #00000014"
       >
         <div class="w-full gap-4">
@@ -354,15 +354,14 @@
             <div
               class="flex w-full md:w-auto gap-3 items-center justify-between md:justify-end"
             >
-            <Tooltip :text="__('Assign to')">
-
-              <AssignTo
-              v-model="assignees.data"
-              doctype="CRM Lead"
-              :docname="docId"
-              btnClass="!w-12 !h-12"
-              />
-            </Tooltip>
+              <Tooltip :text="__('Assign to')">
+                <AssignTo
+                  v-model="assignees.data"
+                  doctype="CRM Lead"
+                  :docname="docId"
+                  btnClass="!w-12 !h-12"
+                />
+              </Tooltip>
               <Dropdown
                 v-if="doc && document.statuses"
                 :options="statuses"
@@ -494,7 +493,6 @@ import { useActiveTabManager } from '@/composables/useActiveTabManager'
 import Dropdown from 'frappe-ui/src/components/Dropdown/Dropdown.vue'
 import Tabs from '@/components/frappe-ui/Tabs.vue'
 import { isMobileView } from '@/composables/settings'
-
 
 const { brand } = getSettings()
 const { $dialog, $socket, makeCall } = globalStore()

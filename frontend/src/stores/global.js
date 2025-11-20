@@ -3,7 +3,8 @@ import { getCurrentInstance, ref } from 'vue'
 
 export const globalStore = defineStore('crm-global', () => {
   const app = getCurrentInstance()
-  const { $dialog, $socket } = app.appContext.config.globalProperties
+  console.log({ app })
+  const { $dialog, $socket } = app?.appContext?.config?.globalProperties ?? {}
 
   let callMethod = () => {}
 

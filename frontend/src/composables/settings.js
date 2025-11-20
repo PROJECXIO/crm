@@ -1,8 +1,9 @@
-import { createResource } from 'frappe-ui'
+import { createDocumentResource, createResource } from 'frappe-ui'
 import { computed, ref } from 'vue'
 
 export const whatsappEnabled = ref(false)
 export const isWhatsappInstalled = ref(false)
+
 createResource({
   url: 'crm.api.whatsapp.is_whatsapp_enabled',
   cache: 'Is Whatsapp Enabled',
@@ -24,6 +25,7 @@ export const callEnabled = ref(false)
 export const twilioEnabled = ref(false)
 export const exotelEnabled = ref(false)
 export const defaultCallingMedium = ref('')
+
 createResource({
   url: 'crm.integrations.api.is_call_integration_enabled',
   cache: 'Is Call Integration Enabled',

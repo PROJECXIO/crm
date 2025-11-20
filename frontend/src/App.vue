@@ -1,7 +1,7 @@
 <template>
   <FrappeUIProvider>
     <Layout class="isolate" v-if="session().isLoggedIn">
-      <router-view :key="$route.fullPath"/>
+      <router-view :key="$route.fullPath" />
     </Layout>
     <Dialogs />
   </FrappeUIProvider>

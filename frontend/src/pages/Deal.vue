@@ -34,7 +34,7 @@
     >
       <!-- deal details -->
       <div
-        class="mx-1 md:mx-3 lg:mx-8 flex flex-col items-start px-4 py-3 md:px-6 md:py-5 lg:items-center lg:flex-row rounded-xl bg-sidebar-bg dark:bg-[#313131] gap-4 mt-5"
+        class="mx-1 md:mx-3 lg:mx-8 flex flex-col items-start px-4 py-3 md:px-6 md:py-5 lg:items-center lg:flex-row rounded-xl -bg dark:bg-[#313131] gap-4 mt-5"
         style="box-shadow: -9px 9px 40px 0px #00000014"
       >
         <div class="w-full gap-4">
@@ -165,9 +165,9 @@
           >
             <Button
               v-if="callEnabled"
-                variant="outline"
-                theme="green"
-                class="!w-12 !h-12"
+              variant="outline"
+              theme="green"
+              class="!w-12 !h-12"
               :tooltip="__('Make a call')"
               :icon="PhoneIcon"
               @click="triggerCall"
@@ -209,7 +209,7 @@
             <div
               class="flex w-full md:w-auto gap-3 items-center justify-between md:justify-end"
             >
-                <!-- <Tooltip :text="__('Assign to')">
+              <!-- <Tooltip :text="__('Assign to')">
                 <AssignTo
                   v-model="assignees.data"
                   doctype="CRM Lead"

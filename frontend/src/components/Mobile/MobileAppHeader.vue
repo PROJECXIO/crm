@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <div class="z-20 pl-2 flex items-center justify-center bg-sidebar-bg">
+    <div class="z-20 pl-2 flex items-center justify-center">
       <Button
         size="md"
         variant="solid"

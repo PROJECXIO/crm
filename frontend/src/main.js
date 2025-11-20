@@ -23,6 +23,8 @@ import {
   frappeRequest,
   FeatherIcon,
 } from 'frappe-ui'
+// import { styles } from '@/composables/settings'
+import { useDocument } from '@/data/document'
 
 let globalComponents = {
   Button,
@@ -52,6 +54,17 @@ for (let key in globalComponents) {
 }
 
 app.config.globalProperties.$dialog = createDialog
+
+const { document: ThemeCustomization } = useDocument(
+  'Theme Customization',
+  'Theme Customization',
+)
+const { document: SidebarController } = useDocument(
+  'Sidebar Controller',
+  'Sidebar Controller',
+)
+app.provide('$styles', ThemeCustomization)
+app.provide('$sidebarController', SidebarController)
 
 let socket
 if (import.meta.env.DEV) {

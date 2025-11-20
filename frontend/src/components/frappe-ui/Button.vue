@@ -5,6 +5,7 @@
     @click="handleClick"
     :disabled="isDisabled"
     :ariaLabel="ariaLabel"
+    :style="handleStyles()"
   >
     <LoadingIndicator
       v-if="loading"
@@ -53,14 +54,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, useSlots, type Component } from 'vue'
+import { computed, inject, useSlots, type Component } from 'vue'
 // import FeatherIcon from 'frappe-ui'
 import LoadingIndicator from '@/components/Icons/LoadingIndicator.vue'
 import { useRouter, type RouteLocation } from 'vue-router'
 
-import { ThemeCustomization } from '@/composables/settings'
-console.log({ ThemeCustomization })
-const styles = computed(() => ThemeCustomization.doc)
+const styles = inject('$styles')
 
 type Theme = 'gray' | 'blue' | 'green' | 'red' | 'purple'
 type Size = 'sm' | 'md' | 'lg' | 'xl' | '2xl'
@@ -96,7 +95,7 @@ const buttonClasses = computed(() => {
   let solidClasses = {
     gray: 'text-white bg-gray-800 hover:bg-gray-700 active:bg-gray-800',
     blue: 'text-ink-white bg-blue-500 hover:bg-surface-blue-3 active:bg-blue-700',
-    green: `text-[#fff] bg-[#00AA80] hover:bg-[#00AA80]/80 active:bg-[#00AA80] bg-[${styles.value?.primary_solid}]`,
+    green: `text-[#fff] bg-[#00AA80] hover:bg-[#00AA80]/80 active:bg-[#00AA80]`,
     red: 'text-ink-white bg-surface-red-5 hover:bg-surface-red-6 active:bg-surface-red-7',
     purple:
       'text-white bg-purple-600 hover:bg-purple-500 active:bg-purple-700 secondary-solid-btn',
@@ -237,6 +236,40 @@ const handleClick = () => {
     return router.push(props.route)
   } else if (props.link) {
     return window.open(props.link, '_blank')
+  }
+}
+
+const handleStyles = () => {
+  if (props.theme === 'green' && props.variant === 'solid') {
+    return {
+      backgroundColor: styles.doc?.primary_solid,
+      color: styles.doc?.primary_solid_text,
+    }
+  } else if (props.theme === 'green' && props.variant === 'outline') {
+    return {
+      borderColor: styles.doc?.primary_outline,
+      color: styles.doc?.primary_outline_text,
+    }
+  } else if (props.theme === 'blue' && props.variant === 'solid') {
+    return {
+      backgroundColor: styles.doc?.secondary_solid,
+      color: styles.doc?.secondary_solid_text,
+    }
+  } else if (props.theme === 'blue' && props.variant === 'outline') {
+    return {
+      borderColor: styles.doc?.secondary_outline,
+      color: styles.doc?.secondary_outline_text,
+    }
+  } else if (props.theme === 'purple' && props.variant === 'solid') {
+    return {
+      backgroundColor: styles.doc?.secondary_solid,
+      color: styles.doc?.secondary_solid_text,
+    }
+  } else if (props.theme === 'purple' && props.variant === 'outline') {
+    return {
+      borderColor: styles.doc?.secondary_outline,
+      color: styles.doc?.secondary_outline_text,
+    }
   }
 }
 </script>

@@ -24,6 +24,11 @@ def get_users():
 			user.session_user = True
 
 		user.roles = frappe.get_roles(user.name)
+		# for v15
+		if role_profile_name := frappe.get_cached_value("User", user.name, "role_profile_name") or None:
+			user.role_profile_name = role_profile_name
+		# for v16
+		user.role_profiles = frappe.get_all("User Role Profile", {"parent": user.name}, pluck="role_profile")
 
 		user.role = ""
 

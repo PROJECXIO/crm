@@ -5,12 +5,11 @@
         <ViewBreadcrumbs routeName="Dashboard" />
       </template>
       <template #right-header>
-
         <Button
           v-if="!editing"
           :title="__('Refresh')"
           class="h-12 w-12 !font-bold !gap-1"
-          :iconLeft="LucideRefreshCcw"
+          :icon="LucideRefreshCcw"
           @click="dashboardItems.reload"
           variant="solid"
           theme="green"
@@ -20,13 +19,13 @@
           v-if="!editing && isAdmin()"
           :title="__('Edit')"
           class="h-12 w-12 !font-bold !gap-1"
-          :iconLeft="LucidePenLine"
+          :icon="LucidePenLine"
           @click="enableEditing"
           variant="solid"
           theme="purple"
           size="lg"
         />
-        
+
         <Button
           v-if="editing"
           class="h-12 !gap-1"
@@ -143,12 +142,12 @@
     </div>
 
     <div class="w-full overflow-y-scroll bg-main-bg">
-        <DashboardGrid
-          class="pt-1"
-          v-if="!dashboardItems.loading && dashboardItems.data"
-          v-model="dashboardItems.data"
-          :editing="editing"
-        />
+      <DashboardGrid
+        class="pt-1"
+        v-if="!dashboardItems.loading && dashboardItems.data"
+        v-model="dashboardItems.data"
+        :editing="editing"
+      />
     </div>
   </div>
   <AddChartModal

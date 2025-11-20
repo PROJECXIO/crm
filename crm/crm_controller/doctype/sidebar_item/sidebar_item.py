@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class Theme(Document):
+class SidebarItem(Document):
 	pass

@@ -89,12 +89,60 @@ import Settings from '@/components/Settings/Settings.vue'
 import { usersStore } from '@/stores/users'
 import { FeatherIcon } from 'frappe-ui'
 import { useStorage } from '@vueuse/core'
-import { computed, onMounted } from 'vue'
+import { computed, inject, onMounted } from 'vue'
 import HRIcon from '@/components/Icons/Custom/HRIcon.vue'
 import { userEmployeeResource } from '@/stores/user'
 
 const isSidebarCollapsed = useStorage('isSidebarCollapsed', false)
 const { getUser } = usersStore()
+
+const sidebarController = inject('$sidebarController')
+
+const sidebarItems = computed(() =>
+  sidebarController.doc?.sidebar_items.map((item) => ({
+    label: item.label,
+    icon: getIcon(item.label),
+    to: item.label,
+    condition: () => getCondition(item),
+  })),
+)
+const getCondition = (item) => {
+  if (item.role) {
+    return getUser().roles.includes(item.role)
+  } else if (item.role_profile) {
+    if (getUser().role_profile_name) {
+      return getUser().role_profile_name === item.role_profile
+    } else if (getUser().role_profiles) {
+      return getUser().role_profiles.includes(item.role_profile)
+    }
+  }
+  return true
+}
+
+const getIcon = (label) => {
+  switch (label) {
+    case 'Dashboard':
+      return LucideLayoutDashboard
+    case 'HR':
+      return HRIcon
+    case 'Leads':
+      return LeadsIcon
+    case 'Deals':
+      return DealsIcon
+    case 'Contacts':
+      return ContactsIcon
+    case 'Organizations':
+      return OrganizationsIcon
+    case 'Notes':
+      return NoteIcon
+    case 'Calendar':
+      return CalendarIcon
+    case 'Call Logs':
+      return PhoneIcon
+    default:
+      return NoteIcon
+  }
+}
 
 const links = [
   {
@@ -157,7 +205,7 @@ const allViews = computed(() => {
       name: 'All Views',
       hideLabel: true,
       opened: true,
-      views: links.filter((link) => {
+      views: sidebarItems.value.filter((link) => {
         if (link.condition) {
           return link.condition()
         }

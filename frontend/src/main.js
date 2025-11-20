@@ -54,11 +54,17 @@ for (let key in globalComponents) {
 }
 
 app.config.globalProperties.$dialog = createDialog
-// CRM Lead
-// CRM-LEAD-2025-00011
 
-const { document } = useDocument('Theme Customization', 'Theme Customization')
-app.provide('$styles', document)
+const { document: ThemeCustomization } = useDocument(
+  'Theme Customization',
+  'Theme Customization',
+)
+const { document: SidebarController } = useDocument(
+  'Sidebar Controller',
+  'Sidebar Controller',
+)
+app.provide('$styles', ThemeCustomization)
+app.provide('$sidebarController', SidebarController)
 
 let socket
 if (import.meta.env.DEV) {

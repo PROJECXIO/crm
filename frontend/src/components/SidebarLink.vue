@@ -4,12 +4,13 @@
     :style="[
       isActive
         ? {
-            color: styles?.sidebar_label_active_color || '#fff',
-            backgroundColor: styles?.sidebar_label_bg_color_active || '#eee',
+            color: styles.doc?.sidebar_label_active_color || '#fff',
+            backgroundColor:
+              styles.doc?.sidebar_label_bg_color_active || '#eee',
           }
         : {
-            color: styles?.sidebar_label_inactive_color || '#eee',
-            backgroundColor: styles?.sidebar_label_bg_color_inactive,
+            color: styles.doc?.sidebar_label_inactive_color || '#eee',
+            backgroundColor: 'inherit',
           },
     ]"
     @click="handleClick"
@@ -76,11 +77,11 @@
             :style="[
               isActive
                 ? {
-                    color: styles?.sidebar_label_active_color || '#fff',
+                    color: styles.doc?.sidebar_label_active_color || '#fff',
                     backgroundColor:
-                      styles?.sidebar_label_bg_color_active || '#eee',
+                      styles.doc?.sidebar_label_bg_color_active || '#eee',
                   }
-                : { color: styles?.sidebar_label_inactive_color || '#eee' },
+                : { color: styles.doc?.sidebar_label_inactive_color || '#eee' },
             ]"
           >
             {{ label }}
@@ -94,15 +95,11 @@
 
 <script setup>
 import { Tooltip } from 'frappe-ui'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import {
-  isMobileView,
-  mobileSidebarOpened,
-  ThemeCustomization,
-} from '@/composables/settings'
+import { isMobileView, mobileSidebarOpened } from '@/composables/settings'
 
-const styles = computed(() => ThemeCustomization.doc)
+const styles = inject('$styles')
 
 const router = useRouter()
 const route = useRoute()

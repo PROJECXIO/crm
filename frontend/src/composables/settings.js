@@ -47,18 +47,3 @@ export const showSettings = ref(false)
 export const disableSettingModalOutsideClick = ref(false)
 
 export const activeSettingsPage = ref('')
-
-// Theme Customization
-import { useDocument } from '@/data/document'
-
-export const styles = createDocumentResource({
-  doctype: 'Theme Customization',
-  name: 'Theme Customization',
-  cache: 'styles',
-})
-
-const { document: ThemeCustomization } = useDocument(
-  'Theme Customization',
-  'Theme Customization',
-)
-export { ThemeCustomization }

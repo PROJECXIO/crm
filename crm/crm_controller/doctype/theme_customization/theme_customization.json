@@ -19,10 +19,14 @@
   "sidebar_label_bg_color_active",
   "button_colors_section",
   "primary_solid",
+  "primary_solid_text",
   "secondary_solid",
+  "secondary_solid_text",
   "column_break_xgdk",
   "primary_outline",
-  "secondary_outline"
+  "primary_outline_text",
+  "secondary_outline",
+  "secondary_outline_text"
  ],
  "fields": [
   {
@@ -89,11 +93,13 @@
    "label": "Button Colors"
   },
   {
+   "description": "for Background color",
    "fieldname": "primary_solid",
    "fieldtype": "Color",
    "label": "Primary Solid"
   },
   {
+   "description": "for Background color",
    "fieldname": "secondary_solid",
    "fieldtype": "Color",
    "label": "Secondary Solid"
@@ -103,21 +109,47 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "for Background color",
    "fieldname": "primary_outline",
    "fieldtype": "Color",
    "label": "Primary Outline "
   },
   {
+   "description": "for Background color",
    "fieldname": "secondary_outline",
    "fieldtype": "Color",
    "label": "Secondary Outline"
+  },
+  {
+   "description": "for Text color",
+   "fieldname": "primary_solid_text",
+   "fieldtype": "Color",
+   "label": "Primary Solid Text"
+  },
+  {
+   "description": "for Text color",
+   "fieldname": "secondary_solid_text",
+   "fieldtype": "Color",
+   "label": "Secondary Solid Text"
+  },
+  {
+   "description": "for Text color",
+   "fieldname": "primary_outline_text",
+   "fieldtype": "Color",
+   "label": "Primary Outline Text"
+  },
+  {
+   "description": "for Text color",
+   "fieldname": "secondary_outline_text",
+   "fieldtype": "Color",
+   "label": "Secondary Outline Text"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-11-19 13:26:41.824594",
+ "modified": "2025-11-19 17:23:48.572044",
  "modified_by": "Administrator",
  "module": "CRM Controller",
  "name": "Theme Customization",
@@ -132,6 +164,14 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "All",
+   "select": 1,
+   "share": 1
   }
  ],
  "row_format": "Dynamic",

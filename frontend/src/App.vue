@@ -11,10 +11,7 @@
 import { Dialogs } from '@/utils/dialogs'
 import { sessionStore as session } from '@/stores/session'
 import { FrappeUIProvider, setConfig } from 'frappe-ui'
-import { computed, defineAsyncComponent, inject } from 'vue'
-
-const styles = inject('$styles')
-console.log({ styles })
+import { computed, defineAsyncComponent } from 'vue'
 
 const MobileLayout = defineAsyncComponent(
   () => import('./components/Layouts/MobileLayout.vue'),

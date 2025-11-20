@@ -13,9 +13,9 @@ IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
 
-class IntegrationTestTheme(IntegrationTestCase):
+class IntegrationTestSidebarController(IntegrationTestCase):
 	"""
-	Integration tests for Theme.
+	Integration tests for SidebarController.
 	Use this class for testing interactions between multiple components.
 	"""
 
